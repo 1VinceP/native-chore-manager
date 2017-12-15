@@ -5,7 +5,8 @@ import {  EMAIL_CHANGED
         , PASSWORD_CHANGED
         , LOGIN_USER_SUCCESS
         , LOGIN_USER_FAIL
-        , LOGIN_USER } from '../types';
+        , LOGIN_USER
+        , FAM_PASS_CHANGED } from '../types';
 
 export function emailChanged( text ) {
 
@@ -41,19 +42,19 @@ export function loginUser( { email, password } ) {
     }
     
 }
-const loginUserSuccess = ( dispatch, user ) => {
+export function loginUserSuccess( dispatch, user ) {
     console.log( 'Log in Success' )
+    // console.log( firebase.auth().currentUser )
 
     dispatch({
         type: LOGIN_USER_SUCCESS,
         payload: user
     })
 
-    Actions.main()
+    Actions.signin({ type: 'reset' })
 }
-
-const loginUserFail = ( dispatch, err ) => {
-    console.log( 'Log in Fail' )
+export function loginUserFail( dispatch, err ) {
+    console.log( `Log in Fail with error: ${err}` )
 
     dispatch({
         type: LOGIN_USER_FAIL,
