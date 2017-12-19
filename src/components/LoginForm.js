@@ -49,6 +49,8 @@ class LoginForm extends Component {
         return (
             <Card>
                 <StatusBar hidden={true} />
+
+                <StatusBar hidden={true} />
                 <CardSection>
                     <Input label={'Email'}
                         placeholder={'user@email.com'}

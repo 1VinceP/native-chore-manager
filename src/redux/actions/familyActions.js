@@ -16,12 +16,9 @@ export function famPassChanged( text ) {
 export function getFamily() {
     const { currentUser } = firebase.auth()
 
-    console.log( 'hit getFamily' )
-
     return dispatch => {
         firebase.database().ref( `/users/${currentUser.uid}/family` )
             .on( 'value', snapshot => {
-                console.log( 'snapshot:', snapshot.val() )
                 dispatch({
                     type: FAMILY_FETCH_SUCCESS,
                     payload: snapshot.val()
