@@ -8,3 +8,7 @@ export const LOGIN_USER = 'LOGIN_USER';
 // Family Types
 export const FAM_PASS_CHANGED = 'FAM_PASS_CHANGED';
 export const FAMILY_FETCH_SUCCESS = 'FAMILY_FETCH_SUCCESS';
+
+// User Types
+export const SET_USER = 'SET_USER';
+export const UPDATE_USER = 'UPDATE_USER';

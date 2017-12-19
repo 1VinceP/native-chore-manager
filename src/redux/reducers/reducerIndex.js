@@ -1,9 +1,11 @@
 import { combineReducers } from 'redux';
 import authReducer from './authReducer';
 import familyReducer from './familyReducer';
+import userReducer from './userReducer';
 
 // These will all be properties on state
 export default combineReducers({
     auth: authReducer,
-    family: familyReducer
+    family: familyReducer,
+    user: userReducer
 })

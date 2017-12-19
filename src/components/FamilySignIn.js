@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import { View, Text, ListView, StatusBar, Modal, Alert } from 'react-native';
+import { View, Text, ListView, StatusBar, Modal, Alert, Keyboard } from 'react-native';
+import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
-import CustomMultiPicker from "react-native-multiple-select-list";
+import CustomMultiPicker from 'react-native-multiple-select-list';
 import { Input, Button, Card, CardSection, InfoModal } from './common';
-import { getFamily, createPerson, famPassChanged } from '../redux/actions/actionIndex';
+import { getFamily, createPerson, famPassChanged, stopGettingFamily, updateUser, setUser } from '../redux/actions/actionIndex';
 
 
 class FamilySignIn extends Component {
@@ -49,7 +50,7 @@ class FamilySignIn extends Component {
     setFirst() {
         console.log( 'FIRST TIME USER' )
 
-        this.props.createPerson( 'New User', '', true )
+        this.props.createPerson( 'New User', '', true, [], 0 )
         this.newUserMessage()
         this.setState({
             firstTimeUser: true
@@ -66,26 +67,36 @@ class FamilySignIn extends Component {
         this.props.famPassChanged( text )
     }
 
-    onSignIn( username, password ) {
-        console.log( 'username:', username, 'password:', password )
+    onSignIn( username, typedPassword ) {
+        console.log( 'username:', username, 'password:', typedPassword )
         const { list } = this.state
 
         if( !username )
             Alert.alert( 'Please select a user' )
 
-        if( !password )
+        if( !typedPassword )
             Alert.alert( 'Password cannot be empty' )
-
         for( let i = 0; i < list.length; i++ ) {
-            if( list[i].name === username ) {
-                if( list[i].password === password && password ) {
-                    // Sign User In
+            const { name, password, manager, uid, chores, points } = list[i]
+            if( name === username && typedPassword ) { // Check username
+                console.log( 'attempting to log in as:', list[i] )
+                if( this.state.firstTimeUser ) { // If firstTimeUser, typed password is now the users password, then sign in
+                    this.props.updateUser( username, typedPassword, manager, uid )
+                    this.completeLogin( username, typedPassword, manager, uid )
                 }
-                else {
+                else if( password === typedPassword ) // Check password, then sign in
+                    this.completeLogin( username, typedPassword, manager, uid, chores, points )
+                else
                     Alert.alert( 'The Password does not match the password for the selected user' )
-                }
             }
         }
+    }
+
+    completeLogin( username, typedPassword, manager, uid, chores = [], points = 0 ) {
+        Keyboard.dismiss()
+        this.onPasswordChange( '' )
+        this.props.setUser( username, typedPassword, manager, uid, chores, points )
+        Actions.dashboard({ type: 'reset' })
     }
 
     render() {
@@ -100,7 +111,7 @@ class FamilySignIn extends Component {
                     <CustomMultiPicker options={optionList}
                                        search={false}
                                        multiple={false}
-                                       scrollViewHeight={250}
+                                       scrollViewHeight={200}
                                        rowWidth={'90%'}
                                        callback={res => this.setState({ username: res })}
                                        iconColor={'#34ADE1'}
@@ -147,4 +158,4 @@ function mapStateToProps( state ) {
     };
 }
 
-export default connect( mapStateToProps, { getFamily, createPerson, famPassChanged } )(FamilySignIn);
+export default connect( mapStateToProps, { getFamily, createPerson, famPassChanged, stopGettingFamily, updateUser, setUser } )(FamilySignIn);
