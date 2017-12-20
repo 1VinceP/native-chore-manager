@@ -7,3 +7,4 @@ export * from './Input';
 export * from './Spinner';
 export * from './ConfirmModal';
 export * from './InfoModal';
+export * from './SwitchInput';

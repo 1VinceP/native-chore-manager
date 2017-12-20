@@ -50,7 +50,7 @@ class FamilySignIn extends Component {
     setFirst() {
         console.log( 'FIRST TIME USER' )
 
-        this.props.createPerson( 'New User', '', true, [], 0 )
+        this.props.createPerson( 'New User', '', true, 0 )
         this.newUserMessage()
         this.setState({
             firstTimeUser: true
@@ -96,7 +96,7 @@ class FamilySignIn extends Component {
         Keyboard.dismiss()
         this.onPasswordChange( '' )
         this.props.setUser( username, typedPassword, manager, uid, chores, points )
-        Actions.dashboard({ type: 'reset' })
+        Actions.dashboard()
     }
 
     render() {

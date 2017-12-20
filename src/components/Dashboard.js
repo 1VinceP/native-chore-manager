@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import firebase from 'firebase';
 import { connect } from 'react-redux';
+import { Actions } from 'react-native-router-flux';
 import { View, Text, StatusBar } from 'react-native';
-import { Card, CardSection } from './common';
+import { Card, CardSection, Button } from './common';
 import AdminList from './AdminList';
 
 class Dashboard extends Component {
@@ -15,20 +16,25 @@ class Dashboard extends Component {
     }
 
     render() {
-
         const { name, manager, chores, points } = this.props.user
+        const { headerTextStyle, headerSectionStyle } = styles
+
         console.log( 'User props:', this.props.user )
 
         return (
             <Card>
                 <StatusBar hidden={true} />
 
-                <CardSection>
-                    <Text>{name}</Text>
-                    <Text>{points}</Text>
+                <CardSection style={headerSectionStyle}>
+                    <Text style={headerTextStyle}>{name}</Text>
+                    <Text style={headerTextStyle}>{points}</Text>
                 </CardSection>
 
-                <CardSection></CardSection>
+                <CardSection>
+                    <Button color='orange' pressed={() => Actions.addPerson()}>
+                        +
+                    </Button>
+                </CardSection>
 
                 <CardSection>
                     { manager
@@ -38,6 +44,18 @@ class Dashboard extends Component {
                 </CardSection>
             </Card>
         )
+    }
+}
+
+const styles = {
+    headerSectionStyle: {
+        justifyContent: 'space-between',
+        paddingLeft: 20,
+        paddingRight: 20
+    },
+    headerTextStyle: {
+        fontSize: 18,
+        color: 'purple'
     }
 }
 
