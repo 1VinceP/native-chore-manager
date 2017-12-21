@@ -12,3 +12,5 @@ export const FAMILY_FETCH_SUCCESS = 'FAMILY_FETCH_SUCCESS';
 // User Types
 export const SET_USER = 'SET_USER';
 export const UPDATE_USER = 'UPDATE_USER';
+export const SELECT_CHILD = 'SELECT_CHILD';
+export const MANAGE_POINTS = 'MANAGE_POINTS';

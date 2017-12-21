@@ -6,6 +6,9 @@ import LoginForm from './components/LoginForm';
 import FamilySignIn from './components/FamilySignIn';
 import Dashboard from './components/Dashboard';
 import AddPerson from './components/AddPerson';
+import ProfileEditor from './components/ProfileEditor';
+import Store from './components/Store';
+import Chores from './components/Chores';
 
 export default function RouterComponent() {
 
@@ -16,8 +19,11 @@ export default function RouterComponent() {
                 <Scene key='login' component={LoginForm} title='Log in to your family' initial />
                 <Scene key='signin' component={FamilySignIn} title='Sign in your to your profile'  />
                 <Scene key='dashboard' component={Dashboard} title='Dashboard'
-                       headerBackTitle={'Sign Out'} />
+                       back={true} backTitle='Sign Out' />
                 <Scene key='addPerson' component={AddPerson} title='Create Person' />
+                <Scene key='profileEditor' component={ProfileEditor} title='Profile Editor' />
+                <Scene key='store' component={Store} title='Store' />
+                <Scene key='chores' component={Chores} title='Chores' />
             </Stack>
             
         </Router>

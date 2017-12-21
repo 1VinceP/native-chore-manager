@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 import _ from 'lodash';
 import { View, Text, ListView } from 'react-native';
 import { connect } from 'react-redux';
-import ListItem from './ListItem';
+import PersonListItem from './PersonListItem';
 
 class AdminList extends Component {
     constructor() {
         super();
 
         this.state = {
-
+            selection: 'none'
         }
     }
 
@@ -22,12 +22,11 @@ class AdminList extends Component {
     }
 
     createDataSource( famList ) {
-        console.log( 'dataSource:', famList )
 
-        // for( let i = 0; i < famList.length; i++ ) {
-        //     if( this.props.user.uid === famList[i].uid )
-        //         famList.splice( i, 1 )
-        // }
+        for( let i = 0; i < famList.length; i++ ) {
+            if( this.props.user.uid === famList[i].uid )
+                famList.splice( i, 1 )
+        }
 
         const ds = new ListView.DataSource({
             rowHasChanged: ( r1, r2 ) => r1 != r2
@@ -37,14 +36,7 @@ class AdminList extends Component {
     }
 
     renderRow( person ) {
-        console.log( 'person:', person )
-
-        return <ListItem person={person}
-                         selectChild={this.selectChild}
-               />
-    }
-    selectChild( uid ) {
-
+        return <PersonListItem person={person} />
     }
 
     render() {
