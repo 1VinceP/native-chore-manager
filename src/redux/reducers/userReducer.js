@@ -29,7 +29,6 @@ export default ( state = initialState, action ) => {
                 return { ...state, selection: null }
             return { ...state, selection: action.payload }
         case MANAGE_POINTS:
-            console.log( 'payload:', action.payload )
             return { ...state, user: { ...state.user, points: action.payload } }
 
         default:
