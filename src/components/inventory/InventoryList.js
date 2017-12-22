@@ -40,12 +40,9 @@ class InventoryList extends Component {
     render() {
         return (
             <View>
-                { this.props.empty
-                    ? <Text>You have no items</Text>
-                    : <ListView dataSource={this.dataSource}
-                          renderRow={this.renderRow}
-                      />
-                }
+                <ListView dataSource={this.dataSource}
+                    renderRow={this.renderRow}
+                />
                 
             </View>
         )
@@ -54,13 +51,11 @@ class InventoryList extends Component {
 
 function mapStateToProps( state ) {
     let inventory
-    let empty = false
 
     console.log( 'inventory:', state.user.user.inventory )
 
-    if( _.isEmpty(state.user.user.inventory) ) {
-        empty = true
-    }
+    if( _.isEmpty(state.user.user.inventory) )
+        inventory = [{name: ''}]
     else {
         inventory = _.map( state.user.user.inventory, ( val, uid ) => {
             return { ...val, uid }
@@ -69,7 +64,6 @@ function mapStateToProps( state ) {
     
 
     return {
-        empty,
         inventory
     };
 }

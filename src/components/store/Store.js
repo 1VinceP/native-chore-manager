@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { View, Text } from 'react-native';
-import { Card, CardSection, Button } from '../common';
+import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
+import { Card, CardSection, Button } from '../common';
 import { resetSelectedItem } from '../../redux/actions/actionIndex';
 import StoreList from './StoreList';
 
@@ -18,11 +19,22 @@ class Store extends Component {
         this.props.resetSelectedItem()
     }
 
+    renderAddButton() {
+        if( this.props.user.manager ) {
+            return (
+                <Button color='brown' pressed={() => Actions.createItem()}>
+                    Add Item
+                </Button>
+            )
+        }
+    }
+
     render() {
         return (
             <Card>
-                <CardSection>
+                <CardSection style={{justifyContent: 'space-around'}}>
                     <Text>{this.props.user.points}</Text>
+                    {this.renderAddButton()}
                 </CardSection>
 
                 <CardSection>

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
+import _ from 'lodash';
 import firebase from 'firebase';
 import { connect } from 'react-redux';
-import { managePoints, getUserItems } from '../redux/actions/actionIndex';
+import { managePoints, getUserItems, getChores, getUserChores } from '../redux/actions/actionIndex';
 import { Actions } from 'react-native-router-flux';
 import { View, Text, StatusBar } from 'react-native';
 import TabNavigator from 'react-native-tab-navigator';
@@ -21,6 +22,8 @@ class Dashboard extends Component {
 
     componentWillMount() {
         this.props.getUserItems( this.props.user.uid )
+        this.props.getChores()
+        this.props.getUserChores( this.props.user.uid )
 
         if( this.props.user.manager ) {
             this.setState({
@@ -74,7 +77,9 @@ class Dashboard extends Component {
                                     title='Chores'
                                     onPress={() => this.setTab('chores')}
                 >
-                    <ChoreList />
+                    <ChoreList choreList={this.props.userChores}
+                               from='dashboard'
+                    />
                 </TabNavigator.Item>
 
                 <TabNavigator.Item selected={this.state.selectedTab === 'inventory'}
@@ -95,6 +100,8 @@ class Dashboard extends Component {
     render() {
         const { name, manager, chores, points, uid } = this.props.user
         const { headerTextStyle, headerSectionStyle, navTabsSectionStyle } = styles
+
+        console.log( 'choreList:', this.props.userChores )
 
         return (
             <Card>
@@ -148,10 +155,20 @@ const styles = {
 
 function mapStateToProps( state ) {
     const { user } = state.user;
+    let userChores
+
+    if( _.isEmpty( user.chores ) )
+        userChores = [{name: ''}]
+    else {
+        userChores = _.map( user.chores, ( val, uid ) => {
+            return { ...val, uid }
+        } )
+    }
 
     return {
-        user
+        user,
+        userChores
     };
 }
 
-export default connect( mapStateToProps, { managePoints, getUserItems } )(Dashboard);
+export default connect( mapStateToProps, { managePoints, getUserItems, getChores, getUserChores } )(Dashboard);

@@ -6,7 +6,8 @@ import {
     SELECT_CHILD,
     MANAGE_POINTS,
     ITEMS_FETCH_SUCCESS,
-    SELECT_I_CHILD
+    SELECT_I_CHILD,
+    USER_CHORES_FETCH_SUCCESS
 } from '../types';
 
 export function setUser( name, password, manager, uid, chores, points ) {
@@ -87,5 +88,40 @@ export function selectInventoryChild( uid ) {
     return {
         type: SELECT_I_CHILD,
         payload: uid
+    }
+}
+
+export function getUserChores( uid ) {
+    const { currentUser } = firebase.auth()
+
+    return dispatch => {
+        firebase.database().ref( `/users/${currentUser.uid}/family/${uid}/chores` )
+            .on( 'value', snapshot => {
+                dispatch({
+                    type: USER_CHORES_FETCH_SUCCESS,
+                    payload: snapshot.val()
+                })
+            } )
+    }
+}
+
+export function assignChoreToPerson( name, priority, reward, recurring, uid ) {
+    const { currentUser } = firebase.auth()
+
+    return () => {
+        firebase.database().ref( `/users/${currentUser.uid}/family/${uid}/chores` )
+            .push({ name, reward, priority, recurring })
+    }
+}
+
+export function completeChore( currentPoints, reward, choreUid, userUid ) {
+    const { currentUser } = firebase.auth()
+
+    return () => {
+        firebase.database().ref( `/users/${currentUser.uid}/family/${userUid}/chores/${choreUid}` )
+            .remove()
+            .then( () => {
+                managePoints( currentPoints, reward, userUid )
+            } )
     }
 }

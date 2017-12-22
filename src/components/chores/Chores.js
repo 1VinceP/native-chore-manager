@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
+import _ from 'lodash';
 import { View, Text } from 'react-native';
+import { connect } from 'react-redux';
+import ChoreList from './ChoreList';
 
 class Chores extends Component {
     constructor() {
@@ -13,10 +16,23 @@ class Chores extends Component {
     render() {
         return (
             <View>
-                <Text>This is the Chores page</Text>
+                <ChoreList choreList={this.props.choreList}
+                           from={'chores'}
+                />
             </View>
         )
     }
 }
 
-export default Chores;
+function mapStateToProps( state ) {
+    
+    const choreList = _.map( state.chores.chores, ( val, uid ) => {
+        return { ...val, uid}
+    } )
+
+    return {
+        choreList
+    };
+}
+
+export default connect( mapStateToProps, {} )(Chores);

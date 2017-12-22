@@ -52,7 +52,7 @@ class FamilySignIn extends Component {
 
         this.props.createPerson( 'New User', '', true, 0 )
         this.createInitialChores()
-        this.createInitialStore()
+        this.createInitialStoreItems()
         this.newUserMessage()
         this.setState({
             firstTimeUser: true
@@ -60,12 +60,12 @@ class FamilySignIn extends Component {
     }
 
     createInitialChores() {
-        this.props.createChore( 'Empty dishwasher', 0, 100 )
-        this.props.createChore( 'Load dishwasher', 0, 100 )
-        this.props.createChore( 'Cook dinner', 1,  400 )
+        this.props.createChore( 'Empty dishwasher', 0, 100, false )
+        this.props.createChore( 'Load dishwasher', 0, 100, false )
+        this.props.createChore( 'Cook dinner', 1,  400, false )
     }
 
-    createInitialStore() {
+    createInitialStoreItems() {
         this.props.createStoreItem( 'Large candy bar', 1500, '' )
         this.props.createStoreItem( '1 hour of video games', 750, '' )
         this.props.createStoreItem( '$5', 7000, '' )

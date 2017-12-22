@@ -3,7 +3,7 @@ import { View, Text, TouchableWithoutFeedback, LayoutAnimation, NativeModules } 
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
 import { CardSection, Button } from '../common';
-import { selectItem, managePoints, addItemToUser } from '../../redux/actions/actionIndex';
+import { selectItem, managePoints, addItemToUser, deleteItem } from '../../redux/actions/actionIndex';
 
 const { UIManager } = NativeModules
 UIManager.setLayoutAnimationEnabledExperimental(true)
@@ -44,12 +44,23 @@ class StoreListItem extends Component {
         if( expanded ) {
             return (
                 <CardSection style={{ flexDirection: 'column', paddingLeft: 10 }}>
-                    {/* <Text style={styles.descStyle}>Price: {price}</Text> */}
                     { this.state.error
                         ? <Button color='red'>Not Enough Points</Button>
                         : <Button color='blue' pressed={() => this.onRedeem(name, price)}>Redeem</Button>
                     }
+                    {this.renderDelete()}
                 </CardSection>
+            )
+        }
+    }
+
+    renderDelete() {
+        const { user, storeItem } = this.props
+        if( user.manager ) {
+            return (
+                <Button color='#800000' pressed={() => this.props.deleteItem(storeItem.uid)}>
+                    Delete Item
+                </Button>
             )
         }
     }
@@ -62,8 +73,6 @@ class StoreListItem extends Component {
             this.props.managePoints( user.points, -price, user.uid )
             this.props.addItemToUser( name, user.uid )
         }
-            
-
     }
 
     render() {
@@ -117,4 +126,4 @@ function mapStateToProps( state, ownProps ) {
     };
 }
 
-export default connect( mapStateToProps, { selectItem, managePoints, addItemToUser } )(StoreListItem);
+export default connect( mapStateToProps, { selectItem, managePoints, addItemToUser, deleteItem } )(StoreListItem);

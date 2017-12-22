@@ -8,6 +8,7 @@ import Dashboard from './components/Dashboard';
 import AddPerson from './components/AddPerson';
 import ProfileEditor from './components/ProfileEditor';
 import Store from './components/store/Store';
+import CreateItem from './components/store/CreateItem';
 import Chores from './components/chores/Chores';
 
 export default function RouterComponent() {
@@ -23,6 +24,7 @@ export default function RouterComponent() {
                 <Scene key='addPerson' component={AddPerson} title='Create Person' />
                 <Scene key='profileEditor' component={ProfileEditor} title='Profile Editor' />
                 <Scene key='store' component={Store} title='Store' />
+                <Scene key='createItem' component={CreateItem} title='Create Item' />
                 <Scene key='chores' component={Chores} title='Chores' />
             </Stack>
             

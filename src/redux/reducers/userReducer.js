@@ -4,7 +4,8 @@ import {
     SELECT_CHILD,
     MANAGE_POINTS,
     ITEMS_FETCH_SUCCESS,
-    SELECT_I_CHILD
+    SELECT_I_CHILD,
+    USER_CHORES_FETCH_SUCCESS
 } from '../types';
 
 const initialState = {
@@ -13,7 +14,7 @@ const initialState = {
         password: '',
         manager: null,
         uid: '',
-        chores: [],
+        chores: {},
         points: 0,
         inventory: {}
     },
@@ -40,6 +41,8 @@ export default ( state = initialState, action ) => {
             if( action.payload === state.inventorySelection )
                 return { ...state, inventorySelection: null }
             return  { ...state, inventorySelection: action.payload }
+        case USER_CHORES_FETCH_SUCCESS:
+            return { ...state, user: { ...state.user, chores: action.payload } }
 
         default:
             return state

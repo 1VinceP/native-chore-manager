@@ -43,3 +43,21 @@ export function resetSelectedItem() {
         type: RESET_ITEM
     }
 }
+
+export function saveItem( name, price ) {
+    const { currentUser } = firebase.auth()
+
+    return () => {
+        firebase.database().ref( `/users/${currentUser.uid}/store` )
+            .push({ name, price })
+    }
+}
+
+export function deleteItem( uid ) {
+    const { currentUser } = firebase.auth()
+
+    return () => {
+        firebase.database().ref( `/users/${currentUser.uid}/store/${uid}` )
+            .remove()
+    }
+}

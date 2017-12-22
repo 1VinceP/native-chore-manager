@@ -1,19 +1,49 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, ListView } from 'react-native';
+import ChoreListItem from './ChoreListItem';
 
 class ChoreList extends Component {
     constructor() {
         super();
 
         this.state = {
-
+            from: ''
         }
+    }
+
+    componentWillMount() {
+        console.log( 'ChoreList props:', this.props )
+        this.createDataSource( this.props.choreList )
+        this.setState({
+            from: this.props.from
+        })
+    }
+
+    componentWillReceiveProps( nextProps ) {
+        this.createDataSource( nextProps.choreList )
+    }
+
+    createDataSource( choreList ) {
+
+        const ds = new ListView.DataSource({
+            rowHasChanged: ( r1, r2 ) => r1 != r2
+        })
+
+        this.dataSource = ds.cloneWithRows( choreList )
+    }
+
+    renderRow( chore, from ) {
+        return <ChoreListItem chore={chore}
+                              from={from}
+        />
     }
 
     render() {
         return (
             <View>
-                <Text>This will be the chore list!</Text>
+                <ListView dataSource={this.dataSource}
+                          renderRow={(chore) => this.renderRow(chore, this.state.from)}
+                />
             </View>
         )
     }

@@ -6,7 +6,7 @@ import {
 
 const initialState = {
     storeList: {},
-    selectedItem: ''
+    selectedItem: null
 }
 
 export default ( state = initialState, action ) => {
