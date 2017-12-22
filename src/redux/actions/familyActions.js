@@ -30,7 +30,7 @@ export function getFamily() {
 export function createPerson( name, password, manager, points = 0 ) {
     const { currentUser } = firebase.auth()
 
-    return dispatch => {
+    return () => {
         firebase.database().ref( `/users/${currentUser.uid}/family` )
             .push( { name, password, manager, points } )
             .then( () => console.log( 'new person created with:', name, password, manager, points ) )

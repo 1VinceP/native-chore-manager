@@ -14,3 +14,10 @@ export const SET_USER = 'SET_USER';
 export const UPDATE_USER = 'UPDATE_USER';
 export const SELECT_CHILD = 'SELECT_CHILD';
 export const MANAGE_POINTS = 'MANAGE_POINTS';
+export const ITEMS_FETCH_SUCCESS = 'ITEMS_FETCH_SUCCESS';
+export const SELECT_I_CHILD = 'SELECT_I_CHILD';
+
+// Store Types
+export const STORE_FETCH_SUCCESS = 'STORE_FETCH_SUCCESS';
+export const SELECT_ITEM = 'SELECT_ITEM';
+export const RESET_ITEM = 'RESET_ITEM';

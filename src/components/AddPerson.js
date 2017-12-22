@@ -26,7 +26,7 @@ class AddPerson extends Component {
         const { name, password, manager } = this.state
 
         this.props.createPerson( name, password, manager )
-        Actions.dashboard({ reset: '' })
+        Actions.pop()
     }
 
     render() {

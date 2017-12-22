@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import { View, Text, TouchableWithoutFeedback, LayoutAnimation, NativeModules } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
-import { CardSection, Button } from './common';
-import { selectChild } from '../redux/actions/actionIndex';
+import { CardSection, Button } from '../common';
+import { selectInventoryChild, removeItemFromUser } from '../../redux/actions/actionIndex';
 
 const { UIManager } = NativeModules
 UIManager.setLayoutAnimationEnabledExperimental(true)
 
-class PersonListItem extends Component {
+class InventoryListItem extends Component {
     constructor() {
         super();
 
@@ -22,36 +22,32 @@ class PersonListItem extends Component {
     }
 
     renderDescription() {
-        const { selection, expanded } = this.props
-        const { manager } = this.props.user
-        const { name, points, uid } = this.props.person
+        const { expanded, item, user } = this.props
 
         if( expanded ) {
             return (
                 <CardSection style={{ flexDirection: 'column', paddingLeft: 10 }}>
-                    <Text style={styles.descStyle}>Points: {points}</Text>
-                    { manager
-                        ? <Button color='blue' pressed={() => this.onEdit()} >Edit</Button>
-                        : null
-                    }
+                    <Button color='blue' pressed={() => this.onUse( user.uid, item.uid )}>Use item</Button>
                 </CardSection>
             )
         }
     }
 
-    onEdit() {
-        Actions.profileEditor({ user: this.props.person, managerEdit: true })
+    onUse( userUid, itemUid ) {
+        console.log( 'item was used' )
+
+        this.props.removeItemFromUser( userUid, itemUid )
     }
 
     render() {
         const { titleStyle } = styles
-        const { name, manager, uid } = this.props.person
+        const { itemName, uid } = this.props.item
 
         return (
-            <TouchableWithoutFeedback onPress={() => this.props.selectChild(uid)}>
+            <TouchableWithoutFeedback onPress={() => this.props.selectInventoryChild(uid)}>
                 <View>
                     <CardSection>
-                        <Text style={titleStyle}>{name}{manager ? '*' : null}</Text>
+                        <Text style={titleStyle}>{itemName}</Text>
                     </CardSection>
                     {this.renderDescription()}
                 </View>
@@ -73,8 +69,8 @@ const styles = {
 }
 
 function mapStateToProps( state, ownProps ) {
-    const { user, childSelection } = state.user;
-    const expanded = childSelection === ownProps.person.uid
+    const { user, inventorySelection } = state.user;
+    const expanded = inventorySelection === ownProps.item.uid
 
     return {
         user,
@@ -82,4 +78,4 @@ function mapStateToProps( state, ownProps ) {
     };
 }
 
-export default connect( mapStateToProps, { selectChild } )(PersonListItem);
+export default connect( mapStateToProps, { selectInventoryChild, removeItemFromUser } )(InventoryListItem);

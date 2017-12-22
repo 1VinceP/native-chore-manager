@@ -7,8 +7,8 @@ import FamilySignIn from './components/FamilySignIn';
 import Dashboard from './components/Dashboard';
 import AddPerson from './components/AddPerson';
 import ProfileEditor from './components/ProfileEditor';
-import Store from './components/Store';
-import Chores from './components/Chores';
+import Store from './components/store/Store';
+import Chores from './components/chores/Chores';
 
 export default function RouterComponent() {
 

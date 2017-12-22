@@ -44,7 +44,6 @@ export function loginUser( { email, password } ) {
 }
 export function loginUserSuccess( dispatch, user ) {
     console.log( 'Log in Success' )
-    // console.log( firebase.auth().currentUser )
 
     dispatch({
         type: LOGIN_USER_SUCCESS,

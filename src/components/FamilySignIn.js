@@ -5,7 +5,7 @@ import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
 import CustomMultiPicker from 'react-native-multiple-select-list';
 import { Input, Button, Card, CardSection, InfoModal } from './common';
-import { getFamily, createPerson, famPassChanged, stopGettingFamily, updateUser, setUser } from '../redux/actions/actionIndex';
+import { getFamily, createPerson, famPassChanged, stopGettingFamily, updateUser, setUser, createChore, createStoreItem } from '../redux/actions/actionIndex';
 
 
 class FamilySignIn extends Component {
@@ -51,10 +51,24 @@ class FamilySignIn extends Component {
         console.log( 'FIRST TIME USER' )
 
         this.props.createPerson( 'New User', '', true, 0 )
+        this.createInitialChores()
+        this.createInitialStore()
         this.newUserMessage()
         this.setState({
             firstTimeUser: true
         })
+    }
+
+    createInitialChores() {
+        this.props.createChore( 'Empty dishwasher', 0, 100 )
+        this.props.createChore( 'Load dishwasher', 0, 100 )
+        this.props.createChore( 'Cook dinner', 1,  400 )
+    }
+
+    createInitialStore() {
+        this.props.createStoreItem( 'Large candy bar', 1500, '' )
+        this.props.createStoreItem( '1 hour of video games', 750, '' )
+        this.props.createStoreItem( '$5', 7000, '' )
     }
 
     newUserMessage() {
@@ -158,4 +172,4 @@ function mapStateToProps( state ) {
     };
 }
 
-export default connect( mapStateToProps, { getFamily, createPerson, famPassChanged, stopGettingFamily, updateUser, setUser } )(FamilySignIn);
+export default connect( mapStateToProps, { getFamily, createPerson, famPassChanged, stopGettingFamily, updateUser, setUser, createChore, createStoreItem } )(FamilySignIn);

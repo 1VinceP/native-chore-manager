@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import firebase from 'firebase';
 import { connect } from 'react-redux';
-import { managePoints } from '../redux/actions/actionIndex';
+import { managePoints, getUserItems } from '../redux/actions/actionIndex';
 import { Actions } from 'react-native-router-flux';
 import { View, Text, StatusBar } from 'react-native';
 import TabNavigator from 'react-native-tab-navigator';
 import { Card, CardSection, Button } from './common';
 import AdminList from './AdminList';
-import ChoreList from './ChoreList';
+import ChoreList from './chores/ChoreList';
+import InventoryList from './inventory/InventoryList';
 
 class Dashboard extends Component {
     constructor() {
@@ -15,6 +16,21 @@ class Dashboard extends Component {
 
         this.state = {
             selectedTab: 'people'
+        }
+    }
+
+    componentWillMount() {
+        this.props.getUserItems( this.props.user.uid )
+
+        if( this.props.user.manager ) {
+            this.setState({
+                selectedTab: 'people'
+            })
+        }
+        else {
+            this.setState({
+                selectedTab: 'chores'
+            })
         }
     }
 
@@ -36,32 +52,44 @@ class Dashboard extends Component {
         return null
     }
 
-    renderNavigationTabs() {
-        if( this.props.user.manager ) {
-            return (
-                <TabNavigator>
-                    <TabNavigator.Item selected={this.state.selectedTab === 'people'}
-                        title='People'
-                        onPress={() => this.setState({ selectedTab: 'people'})}
-                    >
-                        <AdminList user={this.props.user}/>
-                    </TabNavigator.Item>
-                    <TabNavigator.Item selected={this.state.selectedTab === 'chores'}
-                                        title='Chores'
-                                        onPress={() => this.setState({ selectedTab: 'chores' })}
-                    >
-                        <ChoreList />
-                    </TabNavigator.Item>
-                </TabNavigator>
-            )
-        }
+    setTab( tabName ) {
+        this.setState({
+            selectedTab: tabName
+        })
+    }
 
-        return <ChoreList />
+    renderNavigationTabs() {
+        return (
+            <TabNavigator>
+                { this.props.user.manager
+                    ? <TabNavigator.Item selected={this.state.selectedTab === 'people'}
+                                        title='People'
+                                        onPress={() => this.setTab('people')}
+                        >
+                        <AdminList user={this.props.user}/>
+                        </TabNavigator.Item>
+                    : null
+                }
+                <TabNavigator.Item selected={this.state.selectedTab === 'chores'}
+                                    title='Chores'
+                                    onPress={() => this.setTab('chores')}
+                >
+                    <ChoreList />
+                </TabNavigator.Item>
+
+                <TabNavigator.Item selected={this.state.selectedTab === 'inventory'}
+                                    title='Inventory'
+                                    onPress={() => this.setTab('inventory')}
+                >
+                    <InventoryList user={this.props.user}/>
+                </TabNavigator.Item>
+            </TabNavigator>
+        )
     }
 
     onPointsButton( points, uid ) {
         console.log( this.props.user )
-        this.props.managePoints( points, -5, uid )
+        this.props.managePoints( points, 500, uid )
     }
 
     render() {
@@ -94,7 +122,7 @@ class Dashboard extends Component {
 
                 <CardSection>
                     <Button pressed={() => this.onPointsButton( points, uid )}>
-                        Subtract 5 points from self
+                        Add 500 points to self
                     </Button>
                 </CardSection>
                 
@@ -126,4 +154,4 @@ function mapStateToProps( state ) {
     };
 }
 
-export default connect( mapStateToProps, { managePoints } )(Dashboard);
+export default connect( mapStateToProps, { managePoints, getUserItems } )(Dashboard);
