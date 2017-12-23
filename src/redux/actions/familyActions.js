@@ -2,7 +2,8 @@ import firebase from 'firebase';
 
 import {
     FAM_PASS_CHANGED,
-    FAMILY_FETCH_SUCCESS
+    FAMILY_FETCH_SUCCESS,
+    FAMILY_OPTIONS
 } from '../types';
 
 export function famPassChanged( text ) {

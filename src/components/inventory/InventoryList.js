@@ -52,8 +52,6 @@ class InventoryList extends Component {
 function mapStateToProps( state ) {
     let inventory
 
-    console.log( 'inventory:', state.user.user.inventory )
-
     if( _.isEmpty(state.user.user.inventory) )
         inventory = [{name: ''}]
     else {

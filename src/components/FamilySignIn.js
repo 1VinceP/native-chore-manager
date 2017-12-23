@@ -5,7 +5,7 @@ import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
 import CustomMultiPicker from 'react-native-multiple-select-list';
 import { Input, Button, Card, CardSection, InfoModal } from './common';
-import { getFamily, createPerson, famPassChanged, stopGettingFamily, updateUser, setUser, createChore, createStoreItem } from '../redux/actions/actionIndex';
+import { getFamily, createPerson, famPassChanged, updateUser, setUser, createChore, createStoreItem } from '../redux/actions/actionIndex';
 
 
 class FamilySignIn extends Component {
@@ -82,7 +82,6 @@ class FamilySignIn extends Component {
     }
 
     onSignIn( username, typedPassword ) {
-        console.log( 'username:', username, 'password:', typedPassword )
         const { list } = this.state
 
         if( !username )
@@ -93,7 +92,6 @@ class FamilySignIn extends Component {
         for( let i = 0; i < list.length; i++ ) {
             const { name, password, manager, uid, chores, points } = list[i]
             if( name === username && typedPassword ) { // Check username
-                console.log( 'attempting to log in as:', list[i] )
                 if( this.state.firstTimeUser ) { // If firstTimeUser, typed password is now the users password, then sign in
                     this.props.updateUser( username, typedPassword, manager, uid )
                     this.completeLogin( username, typedPassword, manager, uid )
@@ -172,4 +170,4 @@ function mapStateToProps( state ) {
     };
 }
 
-export default connect( mapStateToProps, { getFamily, createPerson, famPassChanged, stopGettingFamily, updateUser, setUser, createChore, createStoreItem } )(FamilySignIn);
+export default connect( mapStateToProps, { getFamily, createPerson, famPassChanged, updateUser, setUser, createChore, createStoreItem } )(FamilySignIn);

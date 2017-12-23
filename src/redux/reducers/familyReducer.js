@@ -1,6 +1,7 @@
 import {
     FAM_PASS_CHANGED,
-    FAMILY_FETCH_SUCCESS
+    FAMILY_FETCH_SUCCESS,
+    FAMILY_OPTIONS
 } from '../types';
 
 const initialState = {

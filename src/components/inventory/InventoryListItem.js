@@ -34,8 +34,6 @@ class InventoryListItem extends Component {
     }
 
     onUse( userUid, itemUid ) {
-        console.log( 'item was used' )
-
         this.props.removeItemFromUser( userUid, itemUid )
     }
 

@@ -9,3 +9,4 @@ export * from './ConfirmModal';
 export * from './InfoModal';
 export * from './SwitchInput';
 export * from './NumericInput';
+export * from './InfoModal2';

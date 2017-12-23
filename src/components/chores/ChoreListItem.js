@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
+import _ from 'lodash';
 import { View, Text, TouchableWithoutFeedback, LayoutAnimation, NativeModules } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
-import { CardSection, Button } from '../common';
+import CustomMultiPicker from 'react-native-multiple-select-list';
+import { CardSection, Button, InfoModal2 } from '../common';
 import { selectChore, assignChoreToPerson, completeChore } from '../../redux/actions/actionIndex';
 
 const { UIManager } = NativeModules
@@ -13,16 +15,31 @@ class ChoreListItem extends Component {
         super();
 
         this.state = {
-
+            showModal: false,
+            options: {},
+            assignTo: []
         }
     }
 
     componentWillMount() {
-        console.log( 'ChoreListItem props:', this.props )
+        this.createList()
     }
 
     componentWillUpdate() {
         LayoutAnimation.spring()
+    }
+
+    createList() {
+        const { famList } = this.props
+        let options = {}
+
+        for( let i = 0; i < famList.length; i++ ) {
+            options[famList[i].uid] = famList[i].name
+        }
+
+        this.setState({
+            options
+        })
     }
 
     renderDescription() {
@@ -48,7 +65,10 @@ class ChoreListItem extends Component {
         const { name, priority, reward, recurring } = this.props.chore
         const { uid } = this.props.user
 
-        this.props.assignChoreToPerson( name, priority, reward, recurring, uid )
+        this.setState({
+            showModal: true
+        })
+        // this.props.assignChoreToPerson( name, priority, reward, recurring, uid )
     }
 
     onComplete() {
@@ -56,6 +76,14 @@ class ChoreListItem extends Component {
         const { name, priority, reward, recurring, uid } = this.props.chore
 
         this.props.completeChore( user.points, reward, chore.uid, user.uid )
+    }
+
+    onModalButton() {
+        this.setState({
+            showModal: false
+        })
+
+        console.log( this.state.assignTo, this.state.showModal )
     }
 
     render() {
@@ -68,7 +96,24 @@ class ChoreListItem extends Component {
                     <CardSection>
                         <Text style={titleStyle}>{name}</Text>
                     </CardSection>
-                    {this.renderDescription()}
+                        {this.renderDescription()}
+
+                    <InfoModal2 visible={this.state.showModal}
+                            onButton={() => this.onModalButton()}
+                    >
+                        <CustomMultiPicker options={this.state.options}
+                                        search={false}
+                                        scrollViewHeight={300}
+                                        rowWidth={'90%'}
+                                        callback={res => this.setState({assignTo: res})}
+                                        iconColor={'#34ADE1'}
+                                        iconSize={25}
+                                        selectedIconName={'ios-checkmark-circle-outline'}
+                                        unselectedIconName={'ios-radio-button-off-outline'}
+                                        returnValue={'value'}
+                                        multiple={true}
+                        />
+                    </InfoModal2>
                 </View>
             </TouchableWithoutFeedback>
         )
@@ -92,9 +137,14 @@ function mapStateToProps( state, ownProps ) {
     const { selectedChore } = state.chores
     const expanded = selectedChore === ownProps.chore.uid
 
+    const famList = _.map( state.family.famList, ( val, uid ) => {
+        return { ...val, uid }
+    } )
+
     return {
         user,
-        expanded
+        expanded,
+        famList
     };
 }
 

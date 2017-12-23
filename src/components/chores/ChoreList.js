@@ -12,7 +12,6 @@ class ChoreList extends Component {
     }
 
     componentWillMount() {
-        console.log( 'ChoreList props:', this.props )
         this.createDataSource( this.props.choreList )
         this.setState({
             from: this.props.from

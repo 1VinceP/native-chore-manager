@@ -101,8 +101,6 @@ class Dashboard extends Component {
         const { name, manager, chores, points, uid } = this.props.user
         const { headerTextStyle, headerSectionStyle, navTabsSectionStyle } = styles
 
-        console.log( 'choreList:', this.props.userChores )
-
         return (
             <Card>
                 <StatusBar hidden={true} />

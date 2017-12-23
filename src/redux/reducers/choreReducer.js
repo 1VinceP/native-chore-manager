@@ -11,7 +11,6 @@ const initialState = {
 export default ( state = initialState, action ) => {
     switch( action.type ) {
         case CHORE_FETCH_SUCCESS:
-            console.log( action.payload )
             return { ...state, chores: action.payload }
         case SELECT_CHORE:
             if( action.payload === state.selectedChore )

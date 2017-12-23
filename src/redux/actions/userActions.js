@@ -117,11 +117,24 @@ export function assignChoreToPerson( name, priority, reward, recurring, uid ) {
 export function completeChore( currentPoints, reward, choreUid, userUid ) {
     const { currentUser } = firebase.auth()
 
-    return () => {
+    return dispatch => {
         firebase.database().ref( `/users/${currentUser.uid}/family/${userUid}/chores/${choreUid}` )
             .remove()
             .then( () => {
-                managePoints( currentPoints, reward, userUid )
+                addChorePoints( currentPoints, reward, userUid, dispatch )
             } )
     }
+}
+function addChorePoints( oldPoints, newPoints, uid, dispatch ) {
+    const { currentUser } = firebase.auth()
+    let currentPoints = oldPoints + newPoints
+
+    firebase.database().ref( `/users/${currentUser.uid}/family/${uid}` )
+        .update({ points: currentPoints })
+        .then( () => {
+            dispatch({
+                type: MANAGE_POINTS,
+                payload: currentPoints
+            })
+        } )
 }
