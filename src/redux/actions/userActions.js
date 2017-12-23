@@ -105,12 +105,18 @@ export function getUserChores( uid ) {
     }
 }
 
-export function assignChoreToPerson( name, priority, reward, recurring, uid ) {
+export function assignChoreToPerson( name, priority, reward, recurring, uidList ) {
     const { currentUser } = firebase.auth()
 
+    console.log( uidList )
+
     return () => {
-        firebase.database().ref( `/users/${currentUser.uid}/family/${uid}/chores` )
-            .push({ name, reward, priority, recurring })
+        for( let i = 0; i < uidList.length; i++ ) {
+            if( uidList[i] ) {
+                firebase.database().ref( `/users/${currentUser.uid}/family/${uidList[i]}/chores` )
+                    .push({ name, reward, priority, recurring })
+            }
+        }
     }
 }
 

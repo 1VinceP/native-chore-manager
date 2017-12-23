@@ -5,7 +5,7 @@ import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
 import CustomMultiPicker from 'react-native-multiple-select-list';
 import { CardSection, Button, InfoModal2 } from '../common';
-import { selectChore, assignChoreToPerson, completeChore } from '../../redux/actions/actionIndex';
+import { selectChore, assignChoreToPerson, completeChore, deleteChore } from '../../redux/actions/actionIndex';
 
 const { UIManager } = NativeModules
 UIManager.setLayoutAnimationEnabledExperimental(true)
@@ -52,7 +52,10 @@ class ChoreListItem extends Component {
                     <Text style={styles.descStyle}>Priority: {priority}</Text>
                     <Text style={styles.descStyle}>Reward: {reward}</Text>
                     { this.props.from === 'chores'
-                        ? <Button color='blue' pressed={() => this.onAssign()}>Assign chore</Button>
+                        ? <View>
+                            <Button color='blue' pressed={() => this.onAssign()}>Assign chore</Button>
+                            <Button color='#800000' pressed={() => this.onDelete()}>Delete chore</Button>
+                          </View>
                         : <Button color='green' pressed={() => this.onComplete()}>Complete chore</Button>
                     }
                     
@@ -62,13 +65,16 @@ class ChoreListItem extends Component {
     }
 
     onAssign() {
-        const { name, priority, reward, recurring } = this.props.chore
-        const { uid } = this.props.user
 
         this.setState({
             showModal: true
         })
-        // this.props.assignChoreToPerson( name, priority, reward, recurring, uid )
+    }
+
+    onDelete() {
+        const { uid } = this.props.chore
+
+        this.props.deleteChore( uid )
     }
 
     onComplete() {
@@ -79,8 +85,13 @@ class ChoreListItem extends Component {
     }
 
     onModalButton() {
+        const { name, priority, reward, recurring } = this.props.chore
+        const { uid } = this.props.user
+
+        this.props.assignChoreToPerson( name, priority, reward, recurring, this.state.assignTo )
+
         this.setState({
-            showModal: false
+            showModal: !this.state.showModal
         })
 
         console.log( this.state.assignTo, this.state.showModal )
@@ -148,4 +159,4 @@ function mapStateToProps( state, ownProps ) {
     };
 }
 
-export default connect( mapStateToProps, { selectChore, assignChoreToPerson, completeChore } )(ChoreListItem);
+export default connect( mapStateToProps, { selectChore, assignChoreToPerson, completeChore, deleteChore } )(ChoreListItem);
