@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
 import { View, Text } from 'react-native';
+import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
-import { Button } from '../common';
+import { Card, CardSection, Button } from '../common';
 import ChoreList from './ChoreList';
 
 class Chores extends Component {
@@ -14,19 +15,28 @@ class Chores extends Component {
         }
     }
 
+    onCreateChore() {
+        Actions.createChore()
+    }
+
     render() {
         return (
-            <View>
+            <Card>
                 { this.props.user.manager
-                    ? <Button>
-                        Add new Chore
-                      </Button>
+                    ? <CardSection>
+                        <Button pressed={() => this.onCreateChore()}>
+                            Add new Chore
+                        </Button>
+                      </CardSection>
                     : null
                 }
-                <ChoreList choreList={this.props.choreList}
-                           from={'chores'}
-                />
-            </View>
+                <CardSection>
+                    <ChoreList choreList={this.props.choreList}
+                               from={'chores'}
+                    />
+                </CardSection>
+                
+            </Card>
         )
     }
 }
