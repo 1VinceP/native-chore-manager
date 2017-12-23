@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Alert } from 'react-native';
 import { connect } from 'react-redux';
 import { updateUser } from '../redux/actions/actionIndex';
 import { Actions } from 'react-native-router-flux';
-import { Card, CardSection, Button, Input, SwitchInput, InfoModal } from './common';
+import { Card, CardSection, Button, Input, SwitchInput, InfoModal, ConfirmModal } from './common';
 
 class ProfileEditor extends Component {
     constructor() {
@@ -13,15 +13,29 @@ class ProfileEditor extends Component {
             newName: '',
             newPassword: '',
             newManager: null,
-            showModal: false
+            newAdmin: null,
+
+            showModal: false,
+            showConfirmModal: false
         }
     }
 
     componentWillMount() {
-        if( this.props.managerEdit )
-        this.setState({
-            newManager: this.props.user.manager
-        })
+        const { manager, admin } = this.props.user
+
+        console.log( this.props.managerEdit )
+    
+        if( this.props.managerEdit ) {
+            this.setState({
+                newManager: manager,
+                newAdmin: admin
+            })
+        }
+
+        // this.setState({
+        //     newManager: manager,
+        //     newAdmin: admin
+        // })
     }
 
     onChangeText( prop, value ) {
@@ -30,36 +44,68 @@ class ProfileEditor extends Component {
         })
     }
 
+    handleManager( value ) {
+        if( !this.state.newAdmin && !this.props.user.admin ) {
+            this.setState({
+                newManager: value
+            })
+        }
+        else if( this.props.user.admin )
+            Alert.alert( 'This user is an admin' )
+    }
+
+    handleAdmin( value ) {
+        this.setState({
+            newAdmin: value
+        })
+
+        if( !this.state.newManager ) {
+            this.setState({
+                newManager: true
+            })
+        }
+    }
+
     onSavePress() {
-        const { newName, newPassword, newManager } = this.state
-        const { name, password, manager, uid } = this.props.user
-        let managementStatus
+        if( this.props.managerEdit ) {
+            if( this.state.newAdmin ) {
+                this.setState({ showConfirmModal: true })
+            }
+            else {
+                this.onModalButton()
+            }
+        }
+        else {
+            this.setState({ showModal: true })
+        }
+    }
+
+    onModalButton() {
+        const { newName, newPassword, newManager, newAdmin } = this.state
+        const { name, password, manager, admin, uid } = this.props.user
+        let managementStatus, adminStatus
 
         if( newManager === null )
             managementStatus = manager
         else
             managementStatus = this.state.newManager
 
-        this.props.updateUser( newName || name, newPassword || password, managementStatus, uid )
+        if( newAdmin === null )
+            adminStatus = admin
+        else
+            adminStatus = this.state.newAdmin
 
-        this.props.managerEdit
-            ? Actions.pop()
-            : this.setState({ showModal: true })
-        
-    }
-
-    onModalButton() {
         this.setState({
-            showModal: false
+            showModal: false,
+            showConfirmModal: false
         })
 
+        this.props.updateUser( newName || name, newPassword || password, managementStatus, adminStatus, uid )
         Actions.pop()
     }
 
     render() {
-        const { user, managerEdit } = this.props
-
-        console.log( 'Editor User:', user )
+        const { user, managerEdit, adminEdit } = this.props
         return (
             <Card>
                 <CardSection>
@@ -78,11 +124,21 @@ class ProfileEditor extends Component {
                     />
                 </CardSection>
 
-                { managerEdit
+                { managerEdit  && !this.props.user.admin
                     ? <CardSection>
-                        <SwitchInput label={'Manager:'}
+                        <SwitchInput label={'Manager'}
                                      value={this.state.newManager}
-                                     onValueChange={() => this.setState({ newManager: !this.state.newManager })}
+                                     onValueChange={value => this.handleManager( value )}
+                        />
+                      </CardSection>
+                    : null
+                }
+
+                { adminEdit && !this.props.user.admin
+                    ? <CardSection>
+                        <SwitchInput label={'Admin'}
+                                 onValueChange={value => this.handleAdmin( value )}
+                                 value={this.state.newAdmin}
                         />
                       </CardSection>
                     : null
@@ -99,17 +155,16 @@ class ProfileEditor extends Component {
                 >
                     Your changes will appear when you sign back in
                 </InfoModal>
+
+                <ConfirmModal visible={this.state.showConfirmModal}
+                              onAccept={() => this.onModalButton()}
+                              onDecline={() => this.setState({showConfirmModal: false})}
+                >
+                    You have marked this person as an admin. This action cannot be undone. Continue?
+                </ConfirmModal>
             </Card>
         )
     }
 }
-
-// function mapStateToProps( state ) {
-//     const { user } = state.user;
-
-//     return {
-//         user
-//     };
-// }
 
 export default connect( null, { updateUser } )(ProfileEditor);

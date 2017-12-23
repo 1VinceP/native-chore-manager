@@ -26,8 +26,8 @@ class CreateChore extends Component {
     onSave() {
         const { name, reward, priority, recurring } = this.state
 
-        if( name && reward >= 0 && priority >= 0 )
-            this.props.createChore( name, priority, reward, recurring )
+        if( name && reward >= 0 )
+            this.props.createChore( name, priority * 1, reward * 1, recurring )
         else
             Alert.alert( 'One or more required fields is empty' )
 
@@ -36,15 +36,14 @@ class CreateChore extends Component {
 
     render() {
 
-        pickerList = [0, 1, 2, 3]
+        pickerList = ['0', '1', '2', '3']
 
-        console.log( 'state:', this.state )
         return (
             <Card>
                 <CardSection>
                     <Input label='Name'
                            value={this.state.name}
-                           onValueChange={value=> this.onValueChange( 'name', value )}
+                           onChangeText={value => this.onValueChange( 'name', value )}
                            placeholder='Empty dishwasher'
                     />
                 </CardSection>
@@ -52,7 +51,7 @@ class CreateChore extends Component {
                 <CardSection>
                     <NumericInput label='Reward'
                                   value={this.state.reward}
-                                  onValueChange={value=> this.onValueChange( 'reward', value )}
+                                  onChangeText={value=> this.onValueChange( 'reward', value )}
                                   placeholder='200'
                     />
                 </CardSection>

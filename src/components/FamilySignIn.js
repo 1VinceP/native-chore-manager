@@ -50,7 +50,7 @@ class FamilySignIn extends Component {
     setFirst() {
         console.log( 'FIRST TIME USER' )
 
-        this.props.createPerson( 'New User', '', true, 0 )
+        this.props.createPerson( 'New User', '', true, true, 0 )
         this.createInitialChores()
         this.createInitialStoreItems()
         this.newUserMessage()
@@ -90,24 +90,24 @@ class FamilySignIn extends Component {
         if( !typedPassword )
             Alert.alert( 'Password cannot be empty' )
         for( let i = 0; i < list.length; i++ ) {
-            const { name, password, manager, uid, chores, points } = list[i]
+            const { name, password, manager, admin, uid, chores, points } = list[i]
             if( name === username && typedPassword ) { // Check username
                 if( this.state.firstTimeUser ) { // If firstTimeUser, typed password is now the users password, then sign in
                     this.props.updateUser( username, typedPassword, manager, uid )
                     this.completeLogin( username, typedPassword, manager, uid )
                 }
                 else if( password === typedPassword ) // Check password, then sign in
-                    this.completeLogin( username, typedPassword, manager, uid, chores, points )
+                    this.completeLogin( username, typedPassword, manager, admin, uid, chores, points )
                 else
                     Alert.alert( 'The Password does not match the password for the selected user' )
             }
         }
     }
 
-    completeLogin( username, typedPassword, manager, uid, chores = [], points = 0 ) {
+    completeLogin( username, typedPassword, manager, admin, uid, chores = [], points = 0 ) {
         Keyboard.dismiss()
         this.onPasswordChange( '' )
-        this.props.setUser( username, typedPassword, manager, uid, chores, points )
+        this.props.setUser( username, typedPassword, manager, admin, uid, chores, points )
         Actions.dashboard()
     }
 

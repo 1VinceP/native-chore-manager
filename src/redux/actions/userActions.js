@@ -10,20 +10,20 @@ import {
     USER_CHORES_FETCH_SUCCESS
 } from '../types';
 
-export function setUser( name, password, manager, uid, chores, points ) {
+export function setUser( name, password, manager, admin, uid, chores, points ) {
 
     return {
         type: SET_USER,
-        payload: { name, password, manager, uid, chores, points }
+        payload: { name, password, manager, admin, uid, chores, points }
     }
 }
 
-export function updateUser( name, password, manager, uid ) {
+export function updateUser( name, password, manager, admin, uid ) {
     const { currentUser } = firebase.auth()
     
     return dispatch => {
         firebase.database().ref( `/users/${currentUser.uid}/family/${uid}` )
-            .update({ name, password, manager })
+            .update({ name, password, manager, admin })
     }
 }
 
@@ -107,8 +107,6 @@ export function getUserChores( uid ) {
 
 export function assignChoreToPerson( name, priority, reward, recurring, uidList ) {
     const { currentUser } = firebase.auth()
-
-    console.log( uidList )
 
     return () => {
         for( let i = 0; i < uidList.length; i++ ) {

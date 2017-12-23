@@ -43,10 +43,16 @@ class Chores extends Component {
 
 function mapStateToProps( state ) {
     const { user } = state.user
-    
-    const choreList = _.map( state.chores.chores, ( val, uid ) => {
-        return { ...val, uid}
-    } )
+    const { chores } = state.chores
+
+    if( _.isEmpty( chores ) )
+        choreList = [{name: ''}]
+    else {
+        let unsortedChoreList = _.map( chores, ( val, uid ) => {
+            return { ...val, uid }
+        } )
+        choreList = _.sortBy( unsortedChoreList, ['priority'] ).reverse()
+    }
 
     return {
         user,

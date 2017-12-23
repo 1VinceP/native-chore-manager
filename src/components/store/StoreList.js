@@ -49,9 +49,10 @@ class StoreList extends Component {
 
 function mapStateToProps( state ) {
 
-    const storeList = _.map( state.storeItems.storeList, ( val, uid ) => {
+    const unorderedStoreList = _.map( state.storeItems.storeList, ( val, uid ) => {
         return { ...val, uid }
     } )
+    const storeList = _.orderBy( unorderedStoreList, ['price'] )
 
     return {
         storeList

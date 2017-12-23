@@ -5,7 +5,9 @@ function PickerInput( { label, selectedValue, onValueChange, list } ) {
     const { containerStyle, labelStyle, inputStyle } = styles
 
     let mappedList = list.map( ( listItem, i ) => {
-        return <Picker.Item key={i} label={listItem} value={listItem} />
+        return (
+            <Picker.Item key={i} label={listItem} value={listItem} />
+        )
     } )
 
     return (
@@ -13,6 +15,7 @@ function PickerInput( { label, selectedValue, onValueChange, list } ) {
             <Text style={labelStyle}>{label}</Text>
             <Picker onValueChange={onValueChange}
                     selectedValue={selectedValue}
+                    style={{ width: '25%' }}
             >
                 {mappedList}
             </Picker>

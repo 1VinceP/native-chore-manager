@@ -67,7 +67,6 @@ class StoreListItem extends Component {
 
     onRedeem( name, price ) {
         const { user } = this.props
-        console.log( `Redeeming item ${name}` )
 
         if( user.points >= price ) {
             this.props.managePoints( user.points, -price, user.uid )

@@ -92,10 +92,9 @@ class Dashboard extends Component {
         )
     }
 
-    onPointsButton( points, uid ) {
-        console.log( this.props.user )
-        this.props.managePoints( points, 500, uid )
-    }
+    // onPointsButton( points, uid ) {
+    //     this.props.managePoints( points, 500, uid )
+    // }
 
     render() {
         const { name, manager, chores, points, uid } = this.props.user
@@ -108,7 +107,7 @@ class Dashboard extends Component {
                 <CardSection style={headerSectionStyle}>
                     <Text style={headerTextStyle}>{name}</Text>
                     <Text style={headerTextStyle}>{points}</Text>
-                    <Button color='blue' pressed={() => Actions.profileEditor({ user: this.props.user })}>
+                    <Button color='blue' pressed={() => Actions.profileEditor({ user: this.props.user, managerEdit: false })}>
                         Edit
                     </Button>
                 </CardSection>
@@ -125,11 +124,11 @@ class Dashboard extends Component {
                     {this.renderNavigationTabs()}
                 </CardSection>
 
-                <CardSection>
+                {/* <CardSection>
                     <Button pressed={() => this.onPointsButton( points, uid )}>
                         Add 500 points to self
                     </Button>
-                </CardSection>
+                </CardSection> */}
                 
             </Card>
         )
@@ -158,9 +157,10 @@ function mapStateToProps( state ) {
     if( _.isEmpty( user.chores ) )
         userChores = [{name: ''}]
     else {
-        userChores = _.map( user.chores, ( val, uid ) => {
+        let unsortedUserChores = _.map( user.chores, ( val, uid ) => {
             return { ...val, uid }
         } )
+        userChores = _.sortBy( unsortedUserChores, ['priority'] ).reverse()
     }
 
     return {

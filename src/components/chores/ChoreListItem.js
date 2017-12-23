@@ -4,7 +4,7 @@ import { View, Text, TouchableWithoutFeedback, LayoutAnimation, NativeModules } 
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
 import CustomMultiPicker from 'react-native-multiple-select-list';
-import { CardSection, Button, InfoModal2 } from '../common';
+import { CardSection, Button } from '../common';
 import { selectChore, assignChoreToPerson, completeChore, deleteChore } from '../../redux/actions/actionIndex';
 
 const { UIManager } = NativeModules
@@ -52,11 +52,34 @@ class ChoreListItem extends Component {
                     <Text style={styles.descStyle}>Priority: {priority}</Text>
                     <Text style={styles.descStyle}>Reward: {reward}</Text>
                     { this.props.from === 'chores'
-                        ? <View>
-                            <Button color='blue' pressed={() => this.onAssign()}>Assign chore</Button>
-                            <Button color='#800000' pressed={() => this.onDelete()}>Delete chore</Button>
-                          </View>
+                        ? !this.state.showModal
+                            ? <View>
+                                <Button color='blue' pressed={() => this.onAssign()}>Assign chore</Button>
+                                <Button color='#800000' pressed={() => this.onDelete()}>Delete chore</Button>
+                              </View>
+                            : null
                         : <Button color='green' pressed={() => this.onComplete()}>Complete chore</Button>
+                    }
+                    { this.state.showModal
+                        ? <View>
+                            <CustomMultiPicker options={this.state.options}
+                                search={false}
+                                scrollViewHeight={300}
+                                rowWidth={'90%'}
+                                callback={res => this.setState({assignTo: res})}
+                                iconColor={'#34ADE1'}
+                                iconSize={25}
+                                selectedIconName={'ios-checkmark-circle-outline'}
+                                unselectedIconName={'ios-radio-button-off-outline'}
+                                returnValue={'value'}
+                                multiple={true}
+                            />
+                            <Button pressed={() => this.onModalButton()}>
+                                Assign chore to selected users
+                            </Button>
+                            <Button pressed={() => this.setState({ showModal: false })}>Cancel</Button>
+                          </View>
+                        : null
                     }
                     
                 </CardSection>
@@ -65,7 +88,6 @@ class ChoreListItem extends Component {
     }
 
     onAssign() {
-
         this.setState({
             showModal: true
         })
@@ -88,43 +110,29 @@ class ChoreListItem extends Component {
         const { name, priority, reward, recurring } = this.props.chore
         const { uid } = this.props.user
 
-        this.props.assignChoreToPerson( name, priority, reward, recurring, this.state.assignTo )
+        this.props.assignChoreToPerson( name, priority * 1, reward * 1, recurring, this.state.assignTo )
 
         this.setState({
             showModal: !this.state.showModal
         })
-
-        console.log( this.state.assignTo, this.state.showModal )
     }
 
     render() {
         const { titleStyle } = styles
-        const { name, uid } = this.props.chore
+        const { name, priority, uid } = this.props.chore
+        let priorityStars = ''
+
+        for( let i = 0; i < priority; i++ ) {
+            priorityStars += '*'
+        }
 
         return (
             <TouchableWithoutFeedback onPress={() => this.props.selectChore(uid)}>
                 <View>
                     <CardSection>
-                        <Text style={titleStyle}>{name}</Text>
+                        <Text style={titleStyle}>{name}{priorityStars}</Text>
                     </CardSection>
-                        {this.renderDescription()}
-
-                    <InfoModal2 visible={this.state.showModal}
-                            onButton={() => this.onModalButton()}
-                    >
-                        <CustomMultiPicker options={this.state.options}
-                                        search={false}
-                                        scrollViewHeight={300}
-                                        rowWidth={'90%'}
-                                        callback={res => this.setState({assignTo: res})}
-                                        iconColor={'#34ADE1'}
-                                        iconSize={25}
-                                        selectedIconName={'ios-checkmark-circle-outline'}
-                                        unselectedIconName={'ios-radio-button-off-outline'}
-                                        returnValue={'value'}
-                                        multiple={true}
-                        />
-                    </InfoModal2>
+                    {this.renderDescription()}
                 </View>
             </TouchableWithoutFeedback>
         )

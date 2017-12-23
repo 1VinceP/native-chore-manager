@@ -52,9 +52,10 @@ class AdminList extends Component {
 
 function mapStateToProps( state ) {
 
-    const famList = _.map( state.family.famList, ( val, uid ) => {
+    let unorderedFamList = _.map( state.family.famList, ( val, uid ) => {
         return { ...val, uid }
     } )
+    let famList = _.sortBy( unorderedFamList, ['manager', 'admin'] )
 
     return {
         famList
