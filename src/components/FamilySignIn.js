@@ -93,8 +93,8 @@ class FamilySignIn extends Component {
             const { name, password, manager, admin, uid, chores, points } = list[i]
             if( name === username && typedPassword ) { // Check username
                 if( this.state.firstTimeUser ) { // If firstTimeUser, typed password is now the users password, then sign in
-                    this.props.updateUser( username, typedPassword, manager, uid )
-                    this.completeLogin( username, typedPassword, manager, uid )
+                    this.props.updateUser( username, typedPassword, manager, admin, uid )
+                    this.completeLogin( username, typedPassword, manager, admin, uid )
                 }
                 else if( password === typedPassword ) // Check password, then sign in
                     this.completeLogin( username, typedPassword, manager, admin, uid, chores, points )
