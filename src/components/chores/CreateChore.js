@@ -64,12 +64,12 @@ class CreateChore extends Component {
                     />
                 </CardSection>
 
-                <CardSection>
+                {/* <CardSection>
                     <SwitchInput label='Recurring'
                                  value={this.state.recurring}
                                  onValueChange={value=> this.onValueChange( 'recurring', value )}
                     />
-                </CardSection>
+                </CardSection> */}
 
                 <CardSection>
                     <Button color='green' pressed={() => this.onSave()}>
