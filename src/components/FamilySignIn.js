@@ -142,7 +142,7 @@ class FamilySignIn extends Component {
                     />
                 </CardSection>
                 <CardSection>
-                    <Button color='#00ff00' pressed={() => this.onSignIn( this.state.username.toString(), this.props.famPass )}>
+                    <Button color='green' pressed={() => this.onSignIn( this.state.username.toString(), this.props.famPass )}>
                         Sign In
                     </Button>
                 </CardSection>
