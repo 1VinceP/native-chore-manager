@@ -92,10 +92,6 @@ class Dashboard extends Component {
         )
     }
 
-    // onPointsButton( points, uid ) {
-    //     this.props.managePoints( points, 500, uid )
-    // }
-
     render() {
         const { name, manager, chores, points, uid } = this.props.user
         const { headerTextStyle, headerSectionStyle, navTabsSectionStyle } = styles
@@ -107,7 +103,7 @@ class Dashboard extends Component {
                 <CardSection style={headerSectionStyle}>
                     <Text style={headerTextStyle}>{name}</Text>
                     <Text style={headerTextStyle}>{points}</Text>
-                    <Button color='blue' pressed={() => Actions.profileEditor({ user: this.props.user, managerEdit: false })}>
+                    <Button color='blue' width={80} pressed={() => Actions.profileEditor({ user: this.props.user, managerEdit: false })}>
                         Edit
                     </Button>
                 </CardSection>
@@ -123,12 +119,6 @@ class Dashboard extends Component {
                 <CardSection style={navTabsSectionStyle}>
                     {this.renderNavigationTabs()}
                 </CardSection>
-
-                {/* <CardSection>
-                    <Button pressed={() => this.onPointsButton( points, uid )}>
-                        Add 500 points to self
-                    </Button>
-                </CardSection> */}
                 
             </Card>
         )

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, Dimensions } from 'react-native';
 
 function Card( props ) {
 
@@ -9,6 +9,8 @@ function Card( props ) {
         </View>
     )
 }
+
+const height = Dimensions.get('window').height
 
 const styles = {
     cardStyle: {
@@ -23,7 +25,8 @@ const styles = {
         elevation: 4,
         marginLeft: 5,
         marginRight: 5,
-        marginTop: 10
+        marginTop: 10,
+        height: height
     }
 }
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, TouchableOpacity } from 'react-native';
 
-function Button( { color, pressed, children } ) {
+function Button( { color, pressed, children, width } ) {
 
     const styles = {
         buttonStyle: {
