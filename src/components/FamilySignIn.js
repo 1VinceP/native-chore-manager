@@ -17,12 +17,20 @@ class FamilySignIn extends Component {
             hasNewProps: false,
             firstTimeUser: false,
             list: [],
-            username: ''
+            username: '',
+
+            keyboard: false
         }
+
+        this.keyboardDidShow = this.keyboardDidShow.bind(this)
+        this.keyboardDidHide = this.keyboardDidHide.bind(this)
     }
 
     componentWillMount() {
         this.props.getFamily()
+
+        this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow)
+        this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this.keyboardDidHide)
     }
 
     componentWillReceiveProps( nextProps ) {
@@ -30,6 +38,14 @@ class FamilySignIn extends Component {
             list: nextProps.famList,
             hasNewProps: true
         })
+    }
+
+    keyboardDidShow() {
+        this.setState({ keyboard: true })
+    }
+
+    keyboardDidHide() {
+        this.setState({ keyboard: false })
     }
 
     createList( famList ) {
@@ -114,6 +130,10 @@ class FamilySignIn extends Component {
     render() {
 
         let optionList = this.createList( this.state.list )
+        let listLength = Object.keys(optionList).length
+        let pickerHeight
+
+        listLength > 10 ? pickerHeight = 8 * 50 : pickerHeight = listLength * 50
 
         return (
             <Card>
@@ -121,24 +141,24 @@ class FamilySignIn extends Component {
 
                 <CardSection>
                     <CustomMultiPicker options={optionList}
-                                       search={false}
-                                       multiple={false}
-                                       scrollViewHeight={200}
-                                       rowWidth={'90%'}
-                                       callback={res => this.setState({ username: res })}
-                                       iconColor={'#34ADE1'}
-                                       iconSize={25}
-                                       selectedIconName={'ios-checkmark-circle-outline'}
-                                       unselectedIconName={'ios-radio-button-off-outline'}
-                                       returnValue={'label'}
+                                    search={false}
+                                    multiple={false}
+                                    scrollViewHeight={pickerHeight}
+                                    rowWidth={'90%'}
+                                    callback={res => this.setState({ username: res })}
+                                    iconColor={'#34ADE1'}
+                                    iconSize={25}
+                                    selectedIconName={'ios-checkmark-circle-outline'}
+                                    unselectedIconName={'ios-radio-button-off-outline'}
+                                    returnValue={'label'}
                     />
                 </CardSection>
                 <CardSection>
                     <Input label={'Password'}
-                           placeholder={'Password'}
-                           secure={true}
-                           onChangeText={(e) => this.onPasswordChange(e)}
-                           value={this.props.famPass}
+                        placeholder={'Password'}
+                        secure={true}
+                        onChangeText={(e) => this.onPasswordChange(e)}
+                        value={this.props.famPass}
                     />
                 </CardSection>
                 <CardSection>
@@ -146,9 +166,14 @@ class FamilySignIn extends Component {
                         Sign In
                     </Button>
                 </CardSection>
+                
+                { this.state.keyboard
+                    ? <View style={{height: 250, flex: 1}}></View>
+                    : null
+                }
 
                 <InfoModal visible={this.state.newUserInfoOpen}
-                           onButton={() => this.newUserMessage()}
+                        onButton={() => this.newUserMessage()}
                 >
                     Thanks for using Chore Manager! Create a password to access your parent profile and get started.
                 </InfoModal>
