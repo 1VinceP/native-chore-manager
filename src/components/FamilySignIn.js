@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import { View, Text, ListView, StatusBar, Modal, Alert, Keyboard } from 'react-native';
+import { View, Text, ListView, StatusBar, Modal, Alert, Keyboard, Dimensions } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
 import CustomMultiPicker from 'react-native-multiple-select-list';
@@ -17,9 +17,7 @@ class FamilySignIn extends Component {
             hasNewProps: false,
             firstTimeUser: false,
             list: [],
-            username: '',
-
-            keyboard: false
+            username: ''
         }
 
         this.keyboardDidShow = this.keyboardDidShow.bind(this)
@@ -27,6 +25,10 @@ class FamilySignIn extends Component {
     }
 
     componentWillMount() {
+        this.setState({
+            visibleHeight: Dimensions.get('window').height
+        })
+
         this.props.getFamily()
 
         this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow)
@@ -40,12 +42,19 @@ class FamilySignIn extends Component {
         })
     }
 
-    keyboardDidShow() {
-        this.setState({ keyboard: true })
+    keyboardDidShow(e) {
+        let newSize = Dimensions.get('window').height - e.endCoordinates.height
+        this.setState({
+            visibleHeight: newSize
+        })
+        console.log( 'showing keyboard', newSize )
     }
 
     keyboardDidHide() {
-        this.setState({ keyboard: false })
+        this.setState({
+            visibleHeight: Dimensions.get('window').height
+        })
+        console.log( 'hiding keyboard', Dimensions.get('window').height )
     }
 
     createList( famList ) {
@@ -136,7 +145,7 @@ class FamilySignIn extends Component {
         listLength > 10 ? pickerHeight = 8 * 50 : pickerHeight = listLength * 50
 
         return (
-            <Card>
+            <Card height={this.state.visibleHeight}>
                 <StatusBar hidden={true} />
 
                 <CardSection>

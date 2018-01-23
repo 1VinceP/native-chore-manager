@@ -4,7 +4,7 @@ import { View } from 'react-native';
 function Card( props ) {
 
     return (
-        <View style={styles.cardStyle}>
+        <View style={[styles.cardStyle, props.height]}>
             {props.children}
         </View>
     )
@@ -23,8 +23,7 @@ const styles = {
         elevation: 4,
         marginLeft: 5,
         marginRight: 5,
-        marginTop: 10,
-        // height: height
+        marginTop: 10
     }
 }
 
