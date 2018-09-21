@@ -1,10 +1,10 @@
 Screenshots
 ===============
 
-![Login](./images/chore-login.jpg)
-![Dashboard_people](./images/chore-people.jpg)
-![People_edit](./images/chore-edit.jpg)
-![Chore](./images/chore-chore.jpg)
-![Dashboard_complete](./images/chore_complete.jpg)
-![Store](./images/chore-store.jpg)
-![Dashboard_prize](./images/chore-prize.jpg)
+<img src='./images/chore-login.jpg' height='800px' />
+<img src='./images/chore-people.jpg' height='800px' />
+<img src='./images/chore-edit.jpg' height='800px' />
+<img src='./images/chore-chore.jpg' height='800px' />
+<img src='./images/chore-complete.jpg' height='800px' />
+<img src='./images/chore-store.jpg' height='800px' />
+<img src='./images/chore-prize.jpg' height='800px' />
