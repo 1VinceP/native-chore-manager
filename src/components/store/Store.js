@@ -7,14 +7,9 @@ import { Card, CardSection, Button } from '../common';
 import { resetSelectedItem, managePoints } from '../../redux/actions/actionIndex';
 import StoreList from './StoreList';
 
+import { blue } from '../colors';
+
 class Store extends Component {
-    constructor() {
-        super();
-
-        this.state = {
-
-        }
-    }
 
     componentWillUnmount() {
         this.props.resetSelectedItem()
@@ -27,7 +22,7 @@ class Store extends Component {
     renderAddButton() {
         if( this.props.user.manager ) {
             return (
-                <Button color='brown' pressed={() => Actions.createItem()}>
+                <Button color={blue} width={100} pressed={() => Actions.createItem()}>
                     Add Item
                 </Button>
             )
@@ -36,20 +31,33 @@ class Store extends Component {
 
     render() {
         const { points, uid } = this.props.user
+        const { sectionStyle, textStyle } = styles
         return (
             <Card>
-                <CardSection style={{justifyContent: 'space-around'}}>
+                <CardSection style={sectionStyle}>
                     <DoubleClick onClick={() => this.onDouble( points, uid )}>
-                        <Text>{this.props.user.points}</Text>
+                        <Text style={textStyle}>{this.props.user.points} points</Text>
                     </DoubleClick>
                     {this.renderAddButton()}
                 </CardSection>
 
-                <CardSection>
+                <CardSection style={{width: '100%'}}>
                     <StoreList />
                 </CardSection>
             </Card>
         )
+    }
+}
+
+const styles = {
+    sectionStyle: {
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingLeft: 6,
+        paddingRight: 6
+    },
+    textStyle: {
+        fontSize: 18
     }
 }
 

@@ -42,8 +42,9 @@ class AdminList extends Component {
     render() {
         return (
             <View>
-                <ListView dataSource={this.dataSource}
-                          renderRow={this.renderRow}
+                <ListView
+                    dataSource={this.dataSource}
+                    renderRow={this.renderRow}
                 />
             </View>
         )

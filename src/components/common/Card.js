@@ -1,11 +1,11 @@
 import React from 'react';
 import { View } from 'react-native';
 
-function Card( props ) {
+function Card({ height, children }) {
 
     return (
-        <View style={[styles.cardStyle, props.height]}>
-            {props.children}
+        <View style={[styles.cardStyle, height]}>
+            {children}
         </View>
     )
 }

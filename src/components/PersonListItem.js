@@ -6,6 +6,8 @@ import { connect } from 'react-redux';
 import { CardSection, Button } from './common';
 import { selectChild } from '../redux/actions/actionIndex';
 
+import { blue } from './colors';
+
 const { UIManager } = NativeModules
 UIManager.setLayoutAnimationEnabledExperimental(true)
 
@@ -49,25 +51,25 @@ class PersonListItem extends Component {
         const { manager, admin } = this.props.user
         const { name, points, uid } = this.props.person
         const { chores } = this.state
-        
+
         if( expanded ) {
             return (
                 <CardSection style={{ flexDirection: 'column', paddingLeft: 10 }}>
                     <Text style={styles.descStyle}>Points: {points}</Text>
-                    <Text style={styles.descStyle}>Chores: {chores.join(', ')}</Text>
+                    <Text style={[styles.descStyle, {marginBottom: 10}]}>Chores: {chores.join(', ')}</Text>
                     {/* { manager && !this.props.person.manager && !this.props.person.admin
-                        ? <Button color='blue' pressed={() => this.onEdit()} >Edit</Button>
+                        ? <Button color={blue} pressed={() => this.onEdit()} >Edit</Button>
                         : null
                     }
                     { admin && !this.props.person.admin
-                        ? <Button color='blue' pressed={() => this.onEdit()} >Edit</Button>
+                        ? <Button color={blue} pressed={() => this.onEdit()} >Edit</Button>
                         : null
                     } */}
 
                     { admin && !this.props.person.admin
-                        ? <Button color='blue' pressed={() => this.onEdit()} >Edit</Button>
+                        ? <Button color={blue} pressed={() => this.onEdit()} >Edit</Button>
                         : manager && !this.props.person.manager && !this.props.person.admin
-                            ? <Button color='blue' pressed={() => this.onEdit()} >Edit</Button>
+                            ? <Button color={blue} pressed={() => this.onEdit()} >Edit</Button>
                             : null
                     }
 

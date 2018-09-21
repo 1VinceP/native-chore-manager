@@ -4,12 +4,15 @@ import firebase from 'firebase';
 import { connect } from 'react-redux';
 import { managePoints, getUserItems, getChores, getUserChores } from '../redux/actions/actionIndex';
 import { Actions } from 'react-native-router-flux';
-import { View, Text, StatusBar } from 'react-native';
+import { View, Text, StatusBar, Image } from 'react-native';
 import TabNavigator from 'react-native-tab-navigator';
 import { Card, CardSection, Button } from './common';
 import AdminList from './AdminList';
 import ChoreList from './chores/ChoreList';
 import InventoryList from './inventory/InventoryList';
+import people from '../assets/people.svg';
+
+import { blue } from './colors';
 
 class Dashboard extends Component {
     constructor() {
@@ -41,11 +44,11 @@ class Dashboard extends Component {
         if( this.props.user.manager ) {
             return (
                 <CardSection>
-                    <Button color='#800000' pressed={() => Actions.addPerson()}>
+                    <Button color={blue} pressed={() => Actions.addPerson()}>
                         Add New Person
                     </Button>
 
-                    <Button color='#112233' pressed={() => Actions.chores()}>
+                    <Button color={blue} pressed={() => Actions.chores()}>
                         Go to Chores
                     </Button>
                 </CardSection>
@@ -65,26 +68,30 @@ class Dashboard extends Component {
         return (
             <TabNavigator>
                 { this.props.user.manager
-                    ? <TabNavigator.Item selected={this.state.selectedTab === 'people'}
-                                        title='People'
-                                        onPress={() => this.setTab('people')}
-                        >
+                    ? <TabNavigator.Item
+                        selected={this.state.selectedTab === 'people'}
+                        title='People'
+                        onPress={() => this.setTab('people')}
+                    >
                         <AdminList user={this.props.user}/>
-                        </TabNavigator.Item>
+                    </TabNavigator.Item>
                     : null
                 }
-                <TabNavigator.Item selected={this.state.selectedTab === 'chores'}
-                                    title='Chores'
-                                    onPress={() => this.setTab('chores')}
+                <TabNavigator.Item
+                    selected={this.state.selectedTab === 'chores'}
+                    title='Chores'
+                    onPress={() => this.setTab('chores')}
                 >
-                    <ChoreList choreList={this.props.userChores}
-                               from='dashboard'
+                    <ChoreList
+                        choreList={this.props.userChores}
+                        from='dashboard'
                     />
                 </TabNavigator.Item>
 
-                <TabNavigator.Item selected={this.state.selectedTab === 'inventory'}
-                                    title='Inventory'
-                                    onPress={() => this.setTab('inventory')}
+                <TabNavigator.Item
+                    selected={this.state.selectedTab === 'inventory'}
+                    title='Inventory'
+                    onPress={() => this.setTab('inventory')}
                 >
                     <InventoryList user={this.props.user}/>
                 </TabNavigator.Item>
@@ -101,9 +108,9 @@ class Dashboard extends Component {
                 <StatusBar hidden={true} />
 
                 <CardSection style={headerSectionStyle}>
-                    <Text style={headerTextStyle}>{name}</Text>
-                    <Text style={headerTextStyle}>{points}</Text>
-                    <Button color='blue' width={80} pressed={() => Actions.profileEditor({ user: this.props.user, managerEdit: false })}>
+                        <Text style={headerTextStyle}>{name}</Text>
+                        <Text style={headerTextStyle}>{points} points</Text>
+                    <Button color={blue} width={60} pressed={() => Actions.profileEditor({ user: this.props.user, managerEdit: false })}>
                         Edit
                     </Button>
                 </CardSection>
@@ -111,7 +118,7 @@ class Dashboard extends Component {
                 {this.renderManagerActions()}
 
                 <CardSection>
-                    <Button color='orange' pressed={() => Actions.store()}>
+                    <Button color='#ffb300' pressed={() => Actions.store()}>
                         Go to Store
                     </Button>
                 </CardSection>
@@ -119,7 +126,7 @@ class Dashboard extends Component {
                 <CardSection style={navTabsSectionStyle}>
                     {this.renderNavigationTabs()}
                 </CardSection>
-                
+
             </Card>
         )
     }
@@ -127,13 +134,16 @@ class Dashboard extends Component {
 
 const styles = {
     headerSectionStyle: {
+        display: 'flex',
+        flexDirection: 'row',
         justifyContent: 'space-between',
+        alignItems: 'center',
         paddingLeft: 20,
         paddingRight: 20
     },
     headerTextStyle: {
         fontSize: 18,
-        color: 'purple'
+        color: '#212121'
     },
     navTabsSectionStyle: {
         height: 300

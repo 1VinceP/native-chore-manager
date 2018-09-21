@@ -5,6 +5,8 @@ import { updateUser } from '../redux/actions/actionIndex';
 import { Actions } from 'react-native-router-flux';
 import { Card, CardSection, Button, Input, SwitchInput, InfoModal, ConfirmModal } from './common';
 
+import { blue } from './colors';
+
 class ProfileEditor extends Component {
     constructor() {
         super();
@@ -24,18 +26,13 @@ class ProfileEditor extends Component {
         const { manager, admin } = this.props.user
 
         console.log( this.props.managerEdit )
-    
+
         if( this.props.managerEdit ) {
             this.setState({
                 newManager: manager,
                 newAdmin: admin
             })
         }
-
-        // this.setState({
-        //     newManager: manager,
-        //     newAdmin: admin
-        // })
     }
 
     onChangeText( prop, value ) {
@@ -108,27 +105,37 @@ class ProfileEditor extends Component {
         const { user, managerEdit, adminEdit } = this.props
         return (
             <Card>
-                <CardSection>
-                    <Input label={'Edit Name'}
-                           placeholder={user.name}
-                           value={this.state.newName}
-                           onChangeText={(e) => this.onChangeText('newName', e)}
-                    />
-                </CardSection>
+                { !managerEdit || adminEdit
+                    ? <View>
+                        <CardSection>
+                            <Input
+                                label={'Edit Name'}
+                                placeholder={user.name}
+                                value={this.state.newName}
+                                onChangeText={(e) => this.onChangeText('newName', e)}
+                            />
+                        </CardSection>
 
-                <CardSection>
-                    <Input label={'Edit Password'}
-                           placeholder={user.password}
-                           value={this.state.newPassword}
-                           onChangeText={(e) => this.onChangeText('newPassword', e)}
-                    />
-                </CardSection>
+                        <CardSection>
+                            <Input
+                                label={'Edit Password'}
+                                placeholder={user.password}
+                                value={this.state.newPassword}
+                                onChangeText={(e) => this.onChangeText('newPassword', e)}
+                            />
+                        </CardSection>
+                    </View>
+                    : <CardSection>
+                        <Text style={{fontSize: 18}}>{user.name}</Text>
+                    </CardSection>
+                }
 
-                { managerEdit  && !this.props.user.admin
+                { managerEdit && !this.props.user.admin
                     ? <CardSection>
-                        <SwitchInput label={'Manager'}
-                                     value={this.state.newManager}
-                                     onValueChange={value => this.handleManager( value )}
+                        <SwitchInput
+                            label={'Manager'}
+                            value={this.state.newManager}
+                            onValueChange={value => this.handleManager( value )}
                         />
                       </CardSection>
                     : null
@@ -136,29 +143,32 @@ class ProfileEditor extends Component {
 
                 { adminEdit && !this.props.user.admin
                     ? <CardSection>
-                        <SwitchInput label={'Admin'}
-                                 onValueChange={value => this.handleAdmin( value )}
-                                 value={this.state.newAdmin}
+                        <SwitchInput
+                            label={'Admin'}
+                            onValueChange={value => this.handleAdmin( value )}
+                            value={this.state.newAdmin}
                         />
                       </CardSection>
                     : null
                 }
 
                 <CardSection>
-                    <Button color='blue' pressed={() => this.onSavePress()}>
+                    <Button color={blue} pressed={() => this.onSavePress()}>
                         Save
                     </Button>
                 </CardSection>
 
-                <InfoModal visible={this.state.showModal}
-                           onButton={() => this.onModalButton()}
+                <InfoModal
+                    visible={this.state.showModal}
+                    onButton={() => this.onModalButton()}
                 >
                     Your changes will appear when you sign back in
                 </InfoModal>
 
-                <ConfirmModal visible={this.state.showConfirmModal}
-                              onAccept={() => this.onModalButton()}
-                              onDecline={() => this.setState({showConfirmModal: false})}
+                <ConfirmModal
+                    visible={this.state.showConfirmModal}
+                    onAccept={() => this.onModalButton()}
+                    onDecline={() => this.setState({showConfirmModal: false})}
                 >
                     You have marked this person as an admin. This action cannot be undone. Continue?
                 </ConfirmModal>

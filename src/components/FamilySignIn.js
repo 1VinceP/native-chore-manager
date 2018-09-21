@@ -7,6 +7,7 @@ import CustomMultiPicker from 'react-native-multiple-select-list';
 import { Input, Button, Card, CardSection, InfoModal } from './common';
 import { getFamily, createPerson, famPassChanged, updateUser, setUser, createChore, createStoreItem } from '../redux/actions/actionIndex';
 
+import { green } from './colors';
 
 class FamilySignIn extends Component {
     constructor() {
@@ -17,7 +18,8 @@ class FamilySignIn extends Component {
             hasNewProps: false,
             firstTimeUser: false,
             list: [],
-            username: ''
+            username: '',
+            visibleHeightL: null
         }
 
         this.keyboardDidShow = this.keyboardDidShow.bind(this)
@@ -149,21 +151,23 @@ class FamilySignIn extends Component {
                 <StatusBar hidden={true} />
 
                 <CardSection>
-                    <CustomMultiPicker options={optionList}
-                                    search={false}
-                                    multiple={false}
-                                    scrollViewHeight={pickerHeight}
-                                    rowWidth={'90%'}
-                                    callback={res => this.setState({ username: res })}
-                                    iconColor={'#34ADE1'}
-                                    iconSize={25}
-                                    selectedIconName={'ios-checkmark-circle-outline'}
-                                    unselectedIconName={'ios-radio-button-off-outline'}
-                                    returnValue={'label'}
+                    <CustomMultiPicker
+                        options={optionList}
+                        search={false}
+                        multiple={false}
+                        scrollViewHeight={pickerHeight}
+                        rowWidth={'100%'} // custom prop
+                        callback={res => this.setState({ username: res })}
+                        iconColor={'#34ADE1'}
+                        iconSize={25}
+                        selectedIconName={'ios-checkmark-circle-outline'}
+                        unselectedIconName={'ios-radio-button-off-outline'}
+                        returnValue={'label'}
                     />
                 </CardSection>
                 <CardSection>
-                    <Input label={'Password'}
+                    <Input
+                        label={'Password'}
                         placeholder={'Password'}
                         secure={true}
                         onChangeText={(e) => this.onPasswordChange(e)}
@@ -171,18 +175,19 @@ class FamilySignIn extends Component {
                     />
                 </CardSection>
                 <CardSection>
-                    <Button color='green' pressed={() => this.onSignIn( this.state.username.toString(), this.props.famPass )}>
+                    <Button color={green} pressed={() => this.onSignIn( this.state.username.toString(), this.props.famPass )}>
                         Sign In
                     </Button>
                 </CardSection>
-                
+
                 { this.state.keyboard
                     ? <View style={{height: 250, flex: 1}}></View>
                     : null
                 }
 
-                <InfoModal visible={this.state.newUserInfoOpen}
-                        onButton={() => this.newUserMessage()}
+                <InfoModal
+                    visible={this.state.newUserInfoOpen}
+                    onButton={() => this.newUserMessage()}
                 >
                     Thanks for using Chore Manager! Create a password to access your parent profile and get started.
                 </InfoModal>

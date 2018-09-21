@@ -5,6 +5,8 @@ import { Actions } from 'react-native-router-flux';
 import { saveItem } from '../../redux/actions/actionIndex';
 import { Card, CardSection, Button, Input, NumericInput, InfoModal } from '../common';
 
+import { green } from '../colors';
+
 class CreateItem extends Component {
     constructor() {
         super();
@@ -68,7 +70,7 @@ class CreateItem extends Component {
                 </CardSection>
 
                 <CardSection>
-                    <Button color='green' pressed={() => this.onSaveButton()}>
+                    <Button color={green} pressed={() => this.onSaveButton()}>
                         Save Item
                     </Button>
                 </CardSection>

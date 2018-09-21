@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 import { createChore } from '../../redux/actions/actionIndex';
 import { Card, CardSection, Button, Input, SwitchInput, NumericInput, PickerInput } from '../common';
 
+import { green } from '../colors';
+
 class CreateChore extends Component {
     constructor() {
         super();
@@ -41,26 +43,29 @@ class CreateChore extends Component {
         return (
             <Card>
                 <CardSection>
-                    <Input label='Name'
-                           value={this.state.name}
-                           onChangeText={value => this.onValueChange( 'name', value )}
-                           placeholder='Empty dishwasher'
+                    <Input
+                        label='Name'
+                        value={this.state.name}
+                        onChangeText={value => this.onValueChange( 'name', value )}
+                        placeholder='Empty dishwasher'
                     />
                 </CardSection>
 
                 <CardSection>
-                    <NumericInput label='Reward'
-                                  value={this.state.reward}
-                                  onChangeText={value=> this.onValueChange( 'reward', value )}
-                                  placeholder='200'
+                    <NumericInput
+                        label='Reward'
+                        value={this.state.reward}
+                        onChangeText={value=> this.onValueChange( 'reward', value )}
+                        placeholder='200'
                     />
                 </CardSection>
 
                 <CardSection>
-                    <PickerInput label='Priority'
-                                 selectedValue={this.state.priority}
-                                 onValueChange={value=> this.onValueChange( 'priority', value )}
-                                 list={pickerList}
+                    <PickerInput
+                        label='Priority'
+                        selectedValue={this.state.priority}
+                        onValueChange={value=> this.onValueChange( 'priority', value )}
+                        list={pickerList}
                     />
                 </CardSection>
 
@@ -72,7 +77,7 @@ class CreateChore extends Component {
                 </CardSection> */}
 
                 <CardSection>
-                    <Button color='green' pressed={() => this.onSave()}>
+                    <Button color={green} pressed={() => this.onSave()}>
                         Save chore
                     </Button>
                 </CardSection>

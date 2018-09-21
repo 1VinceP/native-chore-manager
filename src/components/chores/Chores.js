@@ -6,14 +6,9 @@ import { connect } from 'react-redux';
 import { Card, CardSection, Button } from '../common';
 import ChoreList from './ChoreList';
 
+import { blue } from '../colors';
+
 class Chores extends Component {
-    constructor() {
-        super();
-
-        this.state = {
-
-        }
-    }
 
     onCreateChore() {
         Actions.createChore()
@@ -24,18 +19,19 @@ class Chores extends Component {
             <Card>
                 { this.props.user.manager
                     ? <CardSection>
-                        <Button pressed={() => this.onCreateChore()}>
+                        <Button color={blue} pressed={() => this.onCreateChore()}>
                             Add new Chore
                         </Button>
                       </CardSection>
                     : null
                 }
-                <CardSection>
-                    <ChoreList choreList={this.props.choreList}
-                               from={'chores'}
+                <CardSection style={{width: '100%'}}>
+                    <ChoreList
+                        choreList={this.props.choreList}
+                        from={'chores'}
                     />
                 </CardSection>
-                
+
             </Card>
         )
     }

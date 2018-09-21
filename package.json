@@ -19,19 +19,19 @@
     "preset": "jest-expo"
   },
   "dependencies": {
-    "auth0-js": "^8.12.1",
-    "expo": "^23.0.4",
-    "firebase": "^4.8.0",
-    "lodash": "^4.17.4",
+    "auth0-js": "^8.12.3",
+    "expo": "^30.0.1",
+    "firebase": "^4.13.1",
+    "lodash": "^4.17.11",
     "react": "16.0.0",
-    "react-native": "0.50.3",
-    "react-native-dotenv": "^0.1.0",
-    "react-native-double-click": "^1.0.3",
+    "react-native": "^0.55.4",
+    "react-native-dotenv": "^0.1.1",
+    "react-native-double-click": "^1.0.5",
     "react-native-multiple-select-list": "^1.0.4",
-    "react-native-router-flux": "^4.0.0-beta.24",
+    "react-native-router-flux": "^4.0.1",
     "react-native-tab-navigator": "^0.3.4",
-    "react-redux": "^5.0.6",
+    "react-redux": "^5.0.7",
     "redux": "^3.7.2",
-    "redux-thunk": "^2.2.0"
+    "redux-thunk": "^2.3.0"
   }
 }

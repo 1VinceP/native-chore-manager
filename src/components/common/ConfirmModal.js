@@ -3,6 +3,8 @@ import { View, Text, Modal } from 'react-native';
 import { CardSection } from './CardSection';
 import { Button } from './Button';
 
+import { green, red } from '../colors';
+
 function ConfirmModal( { children, visible, onAccept, onDecline } ) {
     const { containerStyle, textStyle, cardSectionStyle } = styles;
 
@@ -18,8 +20,8 @@ function ConfirmModal( { children, visible, onAccept, onDecline } ) {
                 </CardSection>
 
                 <CardSection>
-                    <Button color='green' pressed={onAccept}>Yes</Button>
-                    <Button color='red' pressed={onDecline}>No</Button>
+                    <Button color={green} pressed={onAccept}>Yes</Button>
+                    <Button color={red} pressed={onDecline}>No</Button>
                 </CardSection>
             </View>
         </Modal>

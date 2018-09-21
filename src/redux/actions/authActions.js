@@ -17,7 +17,7 @@ export function emailChanged( text ) {
 };
 
 export function passwordChanged( text ) {
-    
+
     return {
         type: PASSWORD_CHANGED,
         payload: text
@@ -26,13 +26,13 @@ export function passwordChanged( text ) {
 
 export function loginUser( { email, password } ) {
     console.log( 'Logging in...' )
-    
+
     return dispatch => {
         dispatch({
             type: LOGIN_USER
         })
 
-        firebase.auth().signInWithEmailAndPassword( email, password )
+        firebase.auth().signInWithEmailAndPassword( email = 'test@test.com', password = 'password' )
             .then( user => loginUserSuccess( dispatch, user ) )
             .catch( () => {
                 firebase.auth().createUserWithEmailAndPassword( email, password )
@@ -40,7 +40,7 @@ export function loginUser( { email, password } ) {
                     .catch( err => loginUserFail( dispatch, err ) )
             } )
     }
-    
+
 }
 export function loginUserSuccess( dispatch, user ) {
     console.log( 'Log in Success' )

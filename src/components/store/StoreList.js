@@ -6,13 +6,6 @@ import { getStoreList } from '../../redux/actions/actionIndex';
 import StoreListItem from './StoreListItem';
 
 class StoreList extends Component {
-    constructor() {
-        super();
-
-        this.state = {
-            
-        }
-    }
 
     componentWillMount() {
         this.props.getStoreList()
@@ -38,9 +31,10 @@ class StoreList extends Component {
 
     render() {
         return (
-            <View>
-                <ListView dataSource={this.dataSource}
-                          renderRow={this.renderRow}
+            <View style={{width: '100%'}}>
+                <ListView
+                    dataSource={this.dataSource}
+                    renderRow={this.renderRow}
                 />
             </View>
         )

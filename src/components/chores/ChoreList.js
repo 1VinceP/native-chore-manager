@@ -3,13 +3,6 @@ import { View, Text, ListView } from 'react-native';
 import ChoreListItem from './ChoreListItem';
 
 class ChoreList extends Component {
-    constructor() {
-        super();
-
-        this.state = {
-            from: ''
-        }
-    }
 
     componentWillMount() {
         this.createDataSource( this.props.choreList )
@@ -32,16 +25,15 @@ class ChoreList extends Component {
     }
 
     renderRow( chore, from ) {
-        return <ChoreListItem chore={chore}
-                              from={from}
-        />
+        return <ChoreListItem chore={chore} from={from} />
     }
 
     render() {
         return (
-            <View>
-                <ListView dataSource={this.dataSource}
-                          renderRow={(chore) => this.renderRow(chore, this.state.from)}
+            <View style={{width: '100%'}}>
+                <ListView
+                    dataSource={this.dataSource}
+                    renderRow={(chore) => this.renderRow(chore, this.state.from)}
                 />
             </View>
         )

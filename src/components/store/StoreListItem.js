@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 import { CardSection, Button } from '../common';
 import { selectItem, managePoints, addItemToUser, deleteItem } from '../../redux/actions/actionIndex';
 
+import { green, red, blue } from '../colors';
+
 const { UIManager } = NativeModules
 UIManager.setLayoutAnimationEnabledExperimental(true)
 
@@ -44,11 +46,13 @@ class StoreListItem extends Component {
         if( expanded ) {
             return (
                 <CardSection style={{ flexDirection: 'column', paddingLeft: 10 }}>
-                    { this.state.error
-                        ? <Button color='red'>Not Enough Points</Button>
-                        : <Button color='blue' pressed={() => this.onRedeem(name, price)}>Redeem</Button>
-                    }
-                    {this.renderDelete()}
+                    <View style={{flexDirection: "row"}}>
+                        { this.state.error
+                            ? <Button color='#ffcdd2'>Not Enough Points</Button>
+                            : <Button color={blue} pressed={() => this.onRedeem(name, price)}>Redeem</Button>
+                        }
+                        {this.renderDelete()}
+                    </View>
                 </CardSection>
             )
         }
@@ -58,7 +62,7 @@ class StoreListItem extends Component {
         const { user, storeItem } = this.props
         if( user.manager ) {
             return (
-                <Button color='#800000' pressed={() => this.props.deleteItem(storeItem.uid)}>
+                <Button color={red} pressed={() => this.props.deleteItem(storeItem.uid)}>
                     Delete Item
                 </Button>
             )
@@ -103,12 +107,12 @@ const styles = {
         paddingRight: 15
     },
     priceStyle: {
-        color: 'green',
+        color: green,
         fontSize: 18,
         paddingLeft: 7
     },
     errorPriceStyle: {
-        color: 'red',
+        color: red,
         fontSize: 18,
         paddingLeft: 7
     }

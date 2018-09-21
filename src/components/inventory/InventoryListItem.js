@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 import { CardSection, Button } from '../common';
 import { selectInventoryChild, removeItemFromUser } from '../../redux/actions/actionIndex';
 
+import { blue } from '../colors';
+
 const { UIManager } = NativeModules
 UIManager.setLayoutAnimationEnabledExperimental(true)
 
@@ -27,7 +29,7 @@ class InventoryListItem extends Component {
         if( expanded ) {
             return (
                 <CardSection style={{ flexDirection: 'column', paddingLeft: 10 }}>
-                    <Button color='blue' pressed={() => this.onUse( user.uid, item.uid )}>Use item</Button>
+                    <Button color={blue} pressed={() => this.onUse( user.uid, item.uid )}>Use item</Button>
                 </CardSection>
             )
         }

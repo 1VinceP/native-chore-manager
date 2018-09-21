@@ -7,6 +7,8 @@ import CustomMultiPicker from 'react-native-multiple-select-list';
 import { CardSection, Button } from '../common';
 import { selectChore, assignChoreToPerson, completeChore, deleteChore } from '../../redux/actions/actionIndex';
 
+import { blue, red, green } from '../colors';
+
 const { UIManager } = NativeModules
 UIManager.setLayoutAnimationEnabledExperimental(true)
 
@@ -49,39 +51,42 @@ class ChoreListItem extends Component {
         if( expanded ) {
             return (
                 <CardSection style={{ flexDirection: 'column', paddingLeft: 10 }}>
-                    <Text style={styles.descStyle}>Priority: {priority}</Text>
-                    <Text style={styles.descStyle}>Reward: {reward}</Text>
+                    <View style={{flexDirection: "row", justifyContent: "space-between", marginBottom: 10}}>
+                        <Text style={styles.descStyle}>Priority: {priority}</Text>
+                        <Text style={styles.descStyle}>Reward: {reward}</Text>
+                    </View>
                     { this.props.from === 'chores'
                         ? !this.state.showModal
-                            ? <View>
-                                <Button color='blue' pressed={() => this.onAssign()}>Assign chore</Button>
-                                <Button color='#800000' pressed={() => this.onDelete()}>Delete chore</Button>
+                            ? <View style={{flexDirection: "row"}}>
+                                <Button color={blue} pressed={() => this.onAssign()}>Assign chore</Button>
+                                <Button pressed={() => this.onDelete()}>Delete chore</Button>
                               </View>
                             : null
-                        : <Button color='green' pressed={() => this.onComplete()}>Complete chore</Button>
+                        : <Button color={green} pressed={() => this.onComplete()}>Complete chore</Button>
                     }
                     { this.state.showModal
                         ? <View>
-                            <CustomMultiPicker options={this.state.options}
+                            <CustomMultiPicker
+                                options={this.state.options}
                                 search={false}
+                                multiple={true}
                                 scrollViewHeight={300}
-                                rowWidth={'90%'}
+                                rowWidth={'100%'}
                                 callback={res => this.setState({assignTo: res})}
                                 iconColor={'#34ADE1'}
                                 iconSize={25}
                                 selectedIconName={'ios-checkmark-circle-outline'}
                                 unselectedIconName={'ios-radio-button-off-outline'}
                                 returnValue={'value'}
-                                multiple={true}
                             />
-                            <Button pressed={() => this.onModalButton()}>
-                                Assign chore to selected users
-                            </Button>
-                            <Button pressed={() => this.setState({ showModal: false })}>Cancel</Button>
+                            <View style={{flexDirection: "row"}}>
+                                <Button color={blue} pressed={() => this.onModalButton()}>Confirm</Button>
+                                <Button pressed={() => this.setState({ showModal: false })}>Cancel</Button>
+                            </View>
                           </View>
                         : null
                     }
-                    
+
                 </CardSection>
             )
         }
@@ -145,7 +150,6 @@ const styles = {
         paddingLeft: 15,
     },
     descStyle: {
-        flex: 1,
         paddingLeft: 15,
         paddingRight: 15,
     }

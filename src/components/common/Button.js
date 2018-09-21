@@ -5,7 +5,8 @@ function Button( { color, pressed, children, width } ) {
 
     const styles = {
         buttonStyle: {
-            flex: 1,
+            flex: !width ? 1 : 0,
+            width,
             alignSelf: 'stretch',
             backgroundColor: '#FFF',
             borderRadius: 5,

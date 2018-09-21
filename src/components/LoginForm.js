@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 import { emailChanged, passwordChanged, loginUser } from '../redux/actions/actionIndex';
 import { Card, CardSection, Input, Button, Spinner } from './common/index';
 
+import { green } from './colors';
+
 class LoginForm extends Component {
 
     onEmailChange( text ) {
@@ -39,7 +41,7 @@ class LoginForm extends Component {
             return <Spinner size={'large'} />
 
         return (
-            <Button color={'green'} pressed={() => this.onButtonPress()}>
+            <Button color={green} pressed={() => this.onButtonPress()}>
                 Login
             </Button>
         )

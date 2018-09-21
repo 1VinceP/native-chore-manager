@@ -19,7 +19,7 @@ function InfoModal( { children, visible, onButton } ) {
                 </CardSection>
 
                 <CardSection>
-                    <Button color='#000' pressed={onButton}>Close Window</Button>
+                    <Button color='#1e88e5' pressed={onButton}>Close Window</Button>
                 </CardSection>
             </View>
         </Modal>
