@@ -19,7 +19,7 @@
     "preset": "jest-expo"
   },
   "dependencies": {
-    "auth0-js": "^8.12.3",
+    "auth0-js": "^9.13.2",
     "expo": "^30.0.1",
     "firebase": "^4.13.1",
     "lodash": "^4.17.11",
